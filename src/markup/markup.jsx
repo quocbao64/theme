@@ -47,6 +47,7 @@ import Contact1 from "./pages/contact-1";
 import Contact2 from "./pages/contact-2";
 
 import DefaultLayout from "../admin/layout/DefaultLayout";
+import ForgetPasswordInput from "./pages/forget-password-input";
 
 class Markup extends Component {
     render() {
@@ -86,6 +87,11 @@ class Markup extends Component {
                             path="/forget-password"
                             exact
                             component={ForgetPassword}
+                        />
+                        <Route
+                            path="/reset-password/:token"
+                            exact
+                            component={ForgetPasswordInput}
                         />
 
                         {/* Courses */}

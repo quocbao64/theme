@@ -5,8 +5,18 @@ import Sticky from "react-stickynode";
 // Images
 import logo from "../../../images/logo.png";
 import adv from "../../../images/adv/adv.jpg";
+import Cookies from "js-cookie";
 
 class Header extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            id: Cookies.get("id"),
+            username: Cookies.get("username"),
+            isExpand: false,
+        };
+    }
+
     componentDidMount() {
         // Search Form Popup
         var searchBtn = document.getElementById("quik-search-btn");
@@ -56,7 +66,18 @@ class Header extends Component {
         }
     }
 
+    componentDidUpdate = (nextProps) => {
+        if (nextProps.id !== this.props.id) {
+            this.props.id = nextProps.id;
+        }
+    };
+
     render() {
+        function handleLogout() {
+            Cookies.remove("id");
+            Cookies.remove("username");
+            Cookies.remove("access_token");
+        }
         return (
             <>
                 <header className="header1 rs-nav header-transp arent">
@@ -80,7 +101,7 @@ class Header extends Component {
                                     </ul>
                                 </div>
                                 <div className="topbar-right w-auto d-flex">
-                                    <ul>
+                                    <ul className="d-flex">
                                         <li>
                                             <select className="header-lang-bx">
                                                 <option data-icon="flag flag-uk">
@@ -91,12 +112,59 @@ class Header extends Component {
                                                 </option>
                                             </select>
                                         </li>
-                                        <li>
-                                            <Link to="/login">Login</Link>
-                                        </li>
-                                        <li>
-                                            <Link to="/register">Register</Link>
-                                        </li>
+                                        {this.state.id ? (
+                                            <li className="is-logged-in">
+                                                <div
+                                                    onClick={() =>
+                                                        this.setState({
+                                                            isExpand:
+                                                                !this.state
+                                                                    .isExpand,
+                                                        })
+                                                    }
+                                                    className="mb-0"
+                                                >
+                                                    {this.state.username}
+                                                </div>
+                                                <ul
+                                                    className="sub-menu"
+                                                    style={
+                                                        this.state.isExpand
+                                                            ? {
+                                                                  visibility:
+                                                                      "visible",
+                                                                  opacity: "1",
+                                                              }
+                                                            : {
+                                                                  visibility:
+                                                                      "hidden",
+                                                                  opacity: "0",
+                                                              }
+                                                    }
+                                                >
+                                                    <li
+                                                        onClick={() =>
+                                                            handleLogout()
+                                                        }
+                                                    >
+                                                        Logout
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        ) : (
+                                            <div>
+                                                <li>
+                                                    <Link to="/login">
+                                                        Login
+                                                    </Link>
+                                                </li>
+                                                <li>
+                                                    <Link to="/register">
+                                                        Register
+                                                    </Link>
+                                                </li>
+                                            </div>
+                                        )}
                                     </ul>
                                 </div>
                             </div>

@@ -17,4 +17,8 @@ export const userApi = {
         const url = "/api/account/forgot-password";
         return axiosApi.post(url, params);
     },
+    resetPassword: (token, params) => {
+        const url = "/api/account/reset-password/" + token;
+        return axiosApi.post(url, params);
+    },
 };

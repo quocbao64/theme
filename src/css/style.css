@@ -282,6 +282,41 @@
 .topbar-right {
     float: right;
 }
+
+.topbar-right .is-logged-in:hover {
+    cursor: pointer;
+}
+
+.topbar-right .is-logged-in .sub-menu {
+    background-color: #ffffff;
+    border: 1px solid #f4f4f4;
+    display: block;
+    left: 0;
+    list-style: none;
+    opacity: 0;
+    padding: 10px 0;
+    position: absolute;
+    visibility: hidden;
+    width: 120px;
+    z-index: 10;
+    border-radius: 4px;
+    top: 100%;
+}
+
+.topbar-right .is-logged-in .sub-menu li {
+    width: 100%;
+    height: 100%;
+    color: #303030;
+    display: block;
+    font-size: 14px;
+    padding: 8px 10px;
+    margin: 0;
+}
+
+.topbar-right .is-logged-in .sub-menu li:hover {
+    background-color: #f2f2f2;
+}
+
 .topbar-center,
 .topbar-left,
 .topbar-right {

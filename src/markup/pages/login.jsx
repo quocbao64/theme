@@ -1,5 +1,5 @@
 import React, { Component, useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import Cookies from "js-cookie";
 
 // Images
@@ -15,6 +15,7 @@ function Login(props) {
     const [alertMessage, setAlertMessage] = useState();
     const [alertVisible, setAlertVisible] = useState(false);
     const [alertType, setPopupAlertType] = useState("primary");
+    const history = useHistory();
 
     const googlebuttonref = useRef();
     const onGoogleSignIn = (user) => {
@@ -58,9 +59,14 @@ function Login(props) {
             };
 
             const response = await userApi.loginAccount(param);
-            console.log(response);
-        } catch (error) {
-            console.log(error);
+            Cookies.set("id", response?.id);
+            Cookies.set("username", response?.username);
+            Cookies.set("access_token", response?.accessToken);
+            history.push("/");
+        } catch (responseError) {
+            setAlertMessage(responseError?.data?.message);
+            setAlertVisible(true);
+            setPopupAlertType("danger");
         }
     };
 
