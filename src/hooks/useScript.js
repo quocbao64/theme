@@ -9,5 +9,5 @@ export const useScript = (url, onload) => {
         document.head.appendChild(script);
 
         return () => document.head.removeChild(script);
-    }, [url, onload]);
+    }, []);
 };

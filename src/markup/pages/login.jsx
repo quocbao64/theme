@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useRef } from "react";
+import React, { Component, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
 
@@ -10,23 +10,59 @@ import GoogleLogin from "react-google-login";
 import { useScript } from "../../hooks/useScript";
 
 function Login(props) {
+    const [username, setUsername] = useState();
+    const [password, setPassword] = useState();
+    const [alertMessage, setAlertMessage] = useState();
+    const [alertVisible, setAlertVisible] = useState(false);
+    const [alertType, setPopupAlertType] = useState("primary");
+
     const googlebuttonref = useRef();
     const onGoogleSignIn = (user) => {
         let userCred = user.credential;
         console.log(userCred);
     };
+
     useScript("https://accounts.google.com/gsi/client", () => {
+        console.log("aaa");
         window.google.accounts.id.initialize({
             client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
             callback: onGoogleSignIn,
             auto_select: false,
         });
 
+        window.google.accounts.id.prompt();
+
         window.google.accounts.id.renderButton(googlebuttonref.current, {
-            size: "medium",
-            text: "Google",
+            size: "large",
+            text: "signin",
         });
     });
+
+    const handleLogin = async () => {
+        const regUsername =
+            /^(?=[a-zA-Z0-9._]{4,20}$)(?!.*[_.]{2})[^_.].*[^_.]$/;
+        const regPassword =
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&_])[A-Za-z\\d@$!%*?&_]{8,20}$/;
+
+        if (!regUsername.test(username)) {
+            setAlertMessage("username is invalid");
+            setAlertVisible(true);
+            setPopupAlertType("danger");
+            return;
+        }
+
+        try {
+            const param = {
+                username: username,
+                password: password,
+            };
+
+            const response = await userApi.loginAccount(param);
+            console.log(response);
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     return (
         <>
@@ -50,6 +86,19 @@ function Login(props) {
                                 <Link to="/register">Create one here</Link>
                             </p>
                         </div>
+                        <div
+                            className={`alert alert-${alertType} alert-dismissible fade show`}
+                            role="alert"
+                            style={{ display: `${alertVisible ? "" : "none"}` }}
+                        >
+                            {alertMessage}
+                            <button
+                                type="button"
+                                className="btn-close"
+                                data-bs-dismiss="alert"
+                                aria-label="Close"
+                            ></button>
+                        </div>
                         <form className="contact-bx">
                             <div className="row placeani">
                                 <div className="col-lg-12">
@@ -61,6 +110,9 @@ function Login(props) {
                                                 required=""
                                                 placeholder="Your Name"
                                                 className="form-control"
+                                                onChange={(e) =>
+                                                    setUsername(e.target.value)
+                                                }
                                             />
                                         </div>
                                     </div>
@@ -69,11 +121,14 @@ function Login(props) {
                                     <div className="form-group">
                                         <div className="input-group">
                                             <input
-                                                name="email"
+                                                name="password"
                                                 type="password"
                                                 className="form-control"
                                                 placeholder="Your Password"
                                                 required=""
+                                                onChange={(e) =>
+                                                    setPassword(e.target.value)
+                                                }
                                             />
                                         </div>
                                     </div>
@@ -102,26 +157,18 @@ function Login(props) {
                                     </div>
                                 </div>
                                 <div className="col-lg-12 m-b30">
-                                    <button
+                                    <p
                                         name="submit"
-                                        type="submit"
-                                        value="Submit"
                                         className="btn button-md"
+                                        onClick={() => handleLogin()}
                                     >
                                         Login
-                                    </button>
+                                    </p>
                                 </div>
                                 <div className="col-lg-12">
                                     <h6 className="m-b15">
                                         Login with Social media
                                     </h6>
-                                    <Link
-                                        className="btn flex-fill m-r10 facebook"
-                                        to="#"
-                                    >
-                                        <i className="fa fa-facebook"></i>
-                                        Facebook
-                                    </Link>
                                     <div ref={googlebuttonref}></div>
                                 </div>
                             </div>

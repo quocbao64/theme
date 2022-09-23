@@ -10,8 +10,36 @@ function Register(props) {
     const [username, setUsername] = useState();
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
+    const [alertMessage, setAlertMessage] = useState();
+    const [alertVisible, setAlertVisible] = useState(false);
+    const [alertType, setPopupAlertType] = useState("primary");
 
     const handleRegister = async () => {
+        const regUsername =
+            /^(?=[a-zA-Z0-9._]{4,20}$)(?!.*[_.]{2})[^_.].*[^_.]$/;
+        const regEmail =
+            /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+        const regPassword =
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&_])[A-Za-z\\d@$!%*?&_]{8,20}$/;
+
+        if (!regUsername.test(username)) {
+            setAlertMessage("username is invalid");
+            setAlertVisible(true);
+            setPopupAlertType("danger");
+            return;
+        } else if (!regEmail.test(email)) {
+            setAlertMessage("email is invalid");
+            setAlertVisible(true);
+            setPopupAlertType("danger");
+            return;
+        } else if (!regPassword.test(password)) {
+            console.log(regPassword.test(password));
+            setAlertMessage("password is invalid");
+            setAlertVisible(true);
+            setPopupAlertType("danger");
+            return;
+        }
+
         try {
             const param = {
                 username: username,
@@ -47,6 +75,19 @@ function Register(props) {
                                 Login Your Account{" "}
                                 <Link to="/login">Click here</Link>
                             </p>
+                        </div>
+                        <div
+                            className={`alert alert-${alertType} alert-dismissible fade show`}
+                            role="alert"
+                            style={{ display: `${alertVisible ? "" : "none"}` }}
+                        >
+                            {alertMessage}
+                            <button
+                                type="button"
+                                className="btn-close"
+                                data-bs-dismiss="alert"
+                                aria-label="Close"
+                            ></button>
                         </div>
                         <form className="contact-bx">
                             <div className="row placeani">
@@ -105,25 +146,6 @@ function Register(props) {
                                     >
                                         Sign up
                                     </p>
-                                </div>
-                                <div className="col-lg-12">
-                                    <h6 className="m-b15">
-                                        Sign Up with Social media
-                                    </h6>
-                                    <Link
-                                        className="btn flex-fill m-r10 facebook"
-                                        to="#"
-                                    >
-                                        <i className="fa fa-facebook"></i>
-                                        Facebook
-                                    </Link>
-                                    <Link
-                                        className="btn flex-fill m-l5 google-plus"
-                                        to="#"
-                                    >
-                                        <i className="fa fa-google-plus"></i>
-                                        Google Plus
-                                    </Link>
                                 </div>
                             </div>
                         </form>

@@ -3,7 +3,7 @@ import queryString from "query-string";
 import Cookies from "js-cookie";
 
 const axiosApi = axios.create({
-    baseURL: process.env.REACT_APP_BASE_URL,
+    baseURL: process.env.REACT_APP_BASE_URL2,
     headers: {
         "Content-Type": "application/json",
     },
