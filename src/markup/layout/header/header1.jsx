@@ -66,18 +66,16 @@ class Header extends Component {
         }
     }
 
-    componentDidUpdate = (nextProps) => {
-        if (nextProps.id !== this.props.id) {
-            this.props.id = nextProps.id;
-        }
-    };
+    handleLogout() {
+        Cookies.remove("id");
+        Cookies.remove("username");
+        Cookies.remove("access_token");
+        this.setState({
+            id: undefined,
+        });
+    }
 
     render() {
-        function handleLogout() {
-            Cookies.remove("id");
-            Cookies.remove("username");
-            Cookies.remove("access_token");
-        }
         return (
             <>
                 <header className="header1 rs-nav header-transp arent">
@@ -143,9 +141,9 @@ class Header extends Component {
                                                     }
                                                 >
                                                     <li
-                                                        onClick={() =>
-                                                            handleLogout()
-                                                        }
+                                                        onClick={this.handleLogout.bind(
+                                                            this
+                                                        )}
                                                     >
                                                         Logout
                                                     </li>
