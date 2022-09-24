@@ -132,7 +132,7 @@ function EditProfile({ stateChanger, state, user }) {
                         aria-label="Close"
                     ></button>
                 </div>
-                <Toaster position="top-center" reverseOrder={true} />
+                <Toaster position="top-right" reverseOrder={true} />
                 <div className="">
                     <div className="">
                         <div className="row">

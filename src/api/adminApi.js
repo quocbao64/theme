@@ -5,4 +5,8 @@ export const adminApi = {
         const url = "/api/role/roles";
         return axiosApi.get(url);
     },
+    getListUser: () => {
+        const url = "/api/account/users";
+        return axiosApi.get(url);
+    },
 };

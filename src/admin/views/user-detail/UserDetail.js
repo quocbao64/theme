@@ -78,7 +78,7 @@ function UserDetail(props) {
                                         type="email"
                                         id="exampleFormControlInput1"
                                         placeholder="name@example.com"
-                                        defaultValue={user.email}
+                                        defaultValue={user?.email}
                                     />
                                 </div>
                                 <div className="mb-3">
@@ -89,7 +89,7 @@ function UserDetail(props) {
                                         type="text"
                                         id="exampleFormControlInput1"
                                         placeholder=""
-                                        defaultValue={user.fullname}
+                                        defaultValue={user?.fullname}
                                     />
                                 </div>
                                 <div className="mb-3">
@@ -100,7 +100,7 @@ function UserDetail(props) {
                                         type="text"
                                         id="exampleFormControlInput1"
                                         placeholder=""
-                                        defaultValue={user.phoneNumber}
+                                        defaultValue={user?.phoneNumber}
                                     />
                                 </div>
                                 <div className="mb-3">
