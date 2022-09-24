@@ -9,7 +9,8 @@ const AppBreadcrumb = () => {
     const currentLocation = useLocation().pathname;
 
     const getRouteName = (pathname, routes) => {
-        return false;
+        const currentRoute = routes.find((route) => route.path === pathname);
+        return currentRoute ? currentRoute.name : false;
     };
 
     const getBreadcrumbs = (location) => {

@@ -1,1 +1,92 @@
+.app-content {
+    .btn {
+        background-color: transparent !important;
+    }
+
+    .btn:hover {
+        color: var(--cui-btn-hover-color) !important;
+        background-color: var(--cui-btn-hover-bg) !important;
+        border-color: var(--cui-btn-hover-border-color) !important;
+    }
+
+    .btn-primary {
+        background-color: #0275d8 !important;
+        border-color: #0275d8 !important;
+        color: #ffffff !important;
+    }
+
+    .btn-outline-secondary {
+        background-color: rgba(0, 0, 0, 0) !important;
+        background-image: none !important;
+        border-color: #cccccc !important;
+        color: #cccccc !important;
+    }
+
+    .btn-check:checked + .btn,
+    .btn-check:active + .btn,
+    .btn:active,
+    .btn.active,
+    .btn.show {
+        color: var(--cui-btn-active-color) !important;
+        background-color: var(--cui-btn-active-bg) !important;
+        border-color: var(--cui-btn-active-border-color) !important;
+    }
+
+    .chartjs-tooltip {
+        position: absolute;
+        z-index: 1021;
+        padding: 0.25rem 0.5rem;
+        color: #fff !important;
+        pointer-events: none;
+        background: rgba(0, 0, 0, 0.7);
+        opacity: 0;
+        transition: all 0.15s ease;
+        transform: translate(-50%, 0);
+        border-radius: 0.375rem;
+        .chartjs-tooltip-header > .chartjs-tooltip-header-item > th {
+            color: #fff !important;
+        }
+    }
+
+    table thead th {
+        color: transparent !important;
+    }
+}
 // Here you can add other styles
+.avatar-status {
+    width: 0.7em;
+    height: 0.7em;
+    position: unset;
+}
+
+.wrapper {
+    .form-control {
+        display: block !important;
+        width: 100% !important;
+        height: auto;
+        padding: 0.375rem 0.75rem !important;
+        font-size: 1rem !important;
+        font-weight: 400 !important;
+        line-height: 1.5 !important;
+        color: var(--cui-input-color, rgba(44, 56, 74, 0.95)) !important;
+        background-color: var(--cui-input-bg, #fff) !important;
+        background-clip: padding-box !important;
+        border: 1px solid var(--cui-input-border-color, #b1b7c1) !important;
+        appearance: none !important;
+        border-radius: 0.375rem !important;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out !important;
+        &:focus {
+            color: var(
+                --cui-input-focus-color,
+                rgba(44, 56, 74, 0.95)
+            ) !important;
+            background-color: var(--cui-input-focus-bg, #fff) !important;
+            border-color: var(
+                --cui-input-focus-border-color,
+                #998fed
+            ) !important;
+            outline: 0 !important;
+            box-shadow: 0 0 0 0.25rem rgb(50 31 219 / 25%) !important;
+        }
+    }
+}

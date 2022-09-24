@@ -140,6 +140,11 @@ class Header extends Component {
                                                               }
                                                     }
                                                 >
+                                                    <li>
+                                                        <Link to="/profile">
+                                                            Profile
+                                                        </Link>
+                                                    </li>
                                                     <li
                                                         onClick={this.handleLogout.bind(
                                                             this

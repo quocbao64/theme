@@ -22,6 +22,7 @@ import "./vendors/fontawesome/css/font-awesome.min.css";
 import "./vendors/flaticon/flaticon.css";
 import "./vendors/line-awesome/css/line-awesome.min.css";
 import "./vendors/themify/themify-icons.css";
+import "./admin/scss/style.scss";
 
 function App() {
     return (

@@ -3,7 +3,7 @@ import queryString from "query-string";
 import Cookies from "js-cookie";
 
 const axiosApi = axios.create({
-    baseURL: process.env.REACT_APP_BASE_URL,
+    baseURL: process.env.REACT_APP_BASE_URL2,
     headers: {
         "Content-Type": "application/json",
     },
@@ -11,7 +11,7 @@ const axiosApi = axios.create({
 });
 
 axiosApi.interceptors.request.use(async (config) => {
-    let token = Cookies.get("accessToken");
+    let token = Cookies.get("access_token");
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
     }

@@ -6,12 +6,9 @@ import BackToTop from "./elements/back-top";
 import PageScrollTop from "./elements/page-scroll-top";
 
 // Home Pages
-import Index from "./pages/index";
 import Index2 from "./pages/index-2";
-import Index3 from "./pages/index-3";
 
 // About Us
-import About1 from "./pages/about-1";
 import About2 from "./pages/about-2";
 
 // Events
@@ -19,7 +16,6 @@ import Events from "./pages/event";
 import EventsDetails from "./pages/events-details";
 
 // Faq
-import Faq1 from "./pages/faq-1";
 import Faq2 from "./pages/faq-2";
 
 // Other Pages
@@ -36,18 +32,18 @@ import Courses from "./pages/courses";
 import CoursesDetails from "./pages/courses-details";
 
 // Blog Pages
-import BlogClassicGrid from "./pages/blog-classic-grid";
 import BlogClassicSidebar from "./pages/blog-classic-sidebar";
-import BlogListSidebar from "./pages/blog-list-sidebar";
-import BlogStandardSidebar from "./pages/blog-standard-sidebar";
 import BlogDetails from "./pages/blog-details";
 
 // Contact Us
 import Contact1 from "./pages/contact-1";
-import Contact2 from "./pages/contact-2";
 
-import DefaultLayout from "../admin/layout/DefaultLayout";
 import ForgetPasswordInput from "./pages/forget-password-input";
+
+import Users from "../admin/views/users/Users";
+import Dashboard from "../admin/views/dashboard/Dashboard";
+import UserDetail from "../admin/views/user-detail/UserDetail";
+import DefaultLayout from "../admin/layout/DefaultLayout";
 
 class Markup extends Component {
     render() {
@@ -93,6 +89,7 @@ class Markup extends Component {
                             exact
                             component={ForgetPasswordInput}
                         />
+                        <Route path="/profile" exact component={Profile} />
 
                         {/* Courses */}
                         <Route path="/courses" exact component={Courses} />
@@ -115,8 +112,24 @@ class Markup extends Component {
                         />
 
                         {/* Contact Us */}
-                        <Route path="/admin" exact component={DefaultLayout} />
                         <Route path="/contact-us" exact component={Contact1} />
+
+                        {/* admin  */}
+                        <Route
+                            path="/admin/dashboard"
+                            exact
+                            component={() => <Dashboard />}
+                        />
+                        <Route
+                            path="/admin/users"
+                            exact
+                            component={() => <Users />}
+                        />
+                        <Route
+                            path="/admin/users/:id"
+                            exact
+                            component={() => <UserDetail />}
+                        />
                     </Switch>
 
                     <PageScrollTop />

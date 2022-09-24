@@ -21,4 +21,12 @@ export const userApi = {
         const url = "/api/account/reset-password/" + token;
         return axiosApi.post(url, params);
     },
+    getUserDetail: () => {
+        const url = "/api/account/info";
+        return axiosApi.get(url);
+    },
+    updateInfo: (params) => {
+        const url = "/api/account/update-info";
+        return axiosApi.put(url, params);
+    },
 };
