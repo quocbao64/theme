@@ -1,4 +1,5 @@
 import {
+    CButton,
     CCard,
     CCardBody,
     CCardHeader,
@@ -8,6 +9,8 @@ import {
     CFormSelect,
 } from "@coreui/react";
 import React, { useEffect, useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
+import { useLocation } from "react-router-dom";
 import { adminApi } from "../../../api/adminApi";
 import { userApi } from "../../../api/userApi";
 import {
@@ -18,26 +21,17 @@ import {
 } from "../../components";
 
 function UserDetail(props) {
-    const [selectOptions, setSelectOptions] = useState([]);
     const [listRole, setListRole] = useState([]);
+    const [listUser, setListUser] = useState();
     const [user, setUser] = useState();
+    const location = useLocation();
+    const [option, setOption] = useState();
 
-    const handleChange = (e) => {
-        let target = e.target;
-        //here
-        let value = Array.from(
-            target.selectedOptions,
-            (option) => option.value
-        );
-        console.log(value);
-        setSelectOptions(value);
-    };
-
-    const getUserInfo = async () => {
+    const getListUser = async () => {
         try {
-            const response = await userApi.getUserDetail();
+            const response = await adminApi.getListUser();
             console.log(response);
-            setUser(response);
+            setListUser(response);
         } catch (responseError) {
             console.log(responseError);
         }
@@ -46,21 +40,57 @@ function UserDetail(props) {
     const getListRole = async () => {
         try {
             const response = await adminApi.getListRole();
-            console.log(response);
             setListRole(response);
         } catch (responseError) {
             console.log(responseError);
         }
     };
 
+    const getUserById = async () => {
+        const username = location.pathname.substring(
+            "/admin/users/".length,
+            location.pathname.length
+        );
+        try {
+            const params = {
+                username: username,
+            };
+            const response = await adminApi.getUserByUsername(params);
+            console.log(response);
+            setUser(response);
+        } catch (responseError) {
+            toast.error(responseError?.message, {
+                duration: 2000,
+            });
+        }
+    };
+
+    const handleUpdateRole = async () => {
+        try {
+            const params = {
+                username: user?.username,
+                role: option,
+            };
+            const response = await adminApi.updateRoleUser(params);
+            toast.success(response?.message, {
+                duration: 2000,
+            });
+        } catch (responseError) {
+            toast.error(responseError?.message, {
+                duration: 2000,
+            });
+        }
+    };
     useEffect(() => {
-        getUserInfo();
+        getListUser();
         getListRole();
+        getUserById();
     }, []);
 
     return (
         <div>
             <AppSidebar />
+            <Toaster position="top-center" reverseOrder={false} />
             <div className="wrapper d-flex flex-column min-vh-100 bg-light">
                 <AppHeader />
                 <div className="body flex-grow-1 px-3">
@@ -114,22 +144,41 @@ function UserDetail(props) {
                                         Set Roles. Click Ctrl to select multiple
                                     </CFormLabel>
                                     <CFormSelect
-                                        multiple
-                                        onChange={(e) => handleChange(e)}
-                                        value={selectOptions}
+                                        aria-label="Default select example"
+                                        onChange={(e) =>
+                                            setOption(e.target.value)
+                                        }
                                     >
-                                        {listRole.map((role, index) => (
-                                            <option
-                                                value={role?.name}
-                                                key={index}
-                                            >
-                                                {role?.name.replace(
-                                                    "ROLE_",
-                                                    ""
-                                                )}
-                                            </option>
-                                        ))}
+                                        {listRole?.map((item, index) => {
+                                            return user?.role === item?.name ? (
+                                                <option
+                                                    key={index}
+                                                    value={item?.name}
+                                                    selected
+                                                >
+                                                    {item?.name?.replace(
+                                                        "ROLE_",
+                                                        ""
+                                                    )}
+                                                </option>
+                                            ) : (
+                                                <option
+                                                    key={index}
+                                                    value={item?.name}
+                                                >
+                                                    {item?.name?.replace(
+                                                        "ROLE_",
+                                                        ""
+                                                    )}
+                                                </option>
+                                            );
+                                        })}
                                     </CFormSelect>
+                                </div>
+                                <div className="mb-3">
+                                    <CButton onClick={() => handleUpdateRole()}>
+                                        Save
+                                    </CButton>
                                 </div>
                             </CCardBody>
                         </CCard>

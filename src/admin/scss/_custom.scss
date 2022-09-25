@@ -1,4 +1,11 @@
-.app-content {
+// Here you can add other styles
+.avatar-status {
+    width: 0.7em;
+    height: 0.7em;
+    position: unset;
+}
+
+.wrapper {
     .btn {
         background-color: transparent !important;
     }
@@ -13,6 +20,12 @@
         background-color: #0275d8 !important;
         border-color: #0275d8 !important;
         color: #ffffff !important;
+    }
+
+    .btn-warning {
+        color: #212529 !important;
+        background-color: #ffc107 !important;
+        border-color: #ffc107 !important;
     }
 
     .btn-outline-secondary {
@@ -48,18 +61,6 @@
         }
     }
 
-    table thead th {
-        color: transparent !important;
-    }
-}
-// Here you can add other styles
-.avatar-status {
-    width: 0.7em;
-    height: 0.7em;
-    position: unset;
-}
-
-.wrapper {
     .form-control {
         display: block !important;
         width: 100% !important;

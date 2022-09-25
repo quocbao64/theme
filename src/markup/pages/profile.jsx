@@ -10,6 +10,7 @@ import Footer from "../layout/footer/footer1";
 import Courses from "../elements/profile-content/courses";
 import QuizResults from "../elements/profile-content/quiz-results";
 import EditProfile from "../elements/profile-content/edit-profile";
+import ChangePassword from "../elements/profile-content/change-password";
 
 // Images
 import bannerImg from "../../images/banner/banner1.jpg";
@@ -147,6 +148,9 @@ function Profile(props) {
                                                             }
                                                             state={state}
                                                         />
+                                                    </Tab.Pane>
+                                                    <Tab.Pane eventKey="tabFour">
+                                                        <ChangePassword />
                                                     </Tab.Pane>
                                                 </div>
                                             </div>

@@ -5,29 +5,22 @@ import { userApi } from "../../../api/userApi";
 
 function EditProfile({ stateChanger, state, user }) {
     const [fullname, setFullname] = useState();
-    const [password, setPassword] = useState();
-    const [rePassword, setRePassword] = useState();
     const [phoneNumber, setPhoneNumber] = useState();
     const [alertMessage, setAlertMessage] = useState();
     const [alertVisible, setAlertVisible] = useState(false);
     const [alertType, setPopupAlertType] = useState("primary");
 
     const handleChangeProfile = async () => {
-        if ((password !== "") & (password !== rePassword)) {
-            setAlertMessage("re input password wrong");
-            setAlertVisible(true);
-            setPopupAlertType("danger");
-            return;
-        }
-
         try {
             const param = {
                 fullname: fullname,
-                password: password,
                 phoneNumber: phoneNumber,
             };
             const response = await userApi.updateInfo(param);
             stateChanger(!state);
+            setAlertMessage(response?.message);
+            setAlertVisible(true);
+            setPopupAlertType("success");
             toast.success("update sucessfully", {
                 duration: 2000,
             });
@@ -47,6 +40,13 @@ function EditProfile({ stateChanger, state, user }) {
                         <div className="col-12 col-sm-8 col-md-8 col-lg-9 ml-auto">
                             <h3>Personal Details</h3>
                         </div>
+                    </div>
+                    <div
+                        className={`alert alert-${alertType} fade show`}
+                        role="alert"
+                        style={{ display: `${alertVisible ? "" : "none"}` }}
+                    >
+                        {alertMessage}
                     </div>
                     <div className="form-group row">
                         <label className="col-12 col-sm-4 col-md-4 col-lg-3 col-form-label">
@@ -88,51 +88,6 @@ function EditProfile({ stateChanger, state, user }) {
                         </div>
                     </div>
                 </div>
-                <div className="">
-                    <div className="form-group row">
-                        <div className="col-12 col-sm-8 col-md-8 col-lg-9 ml-auto">
-                            <h3>Password</h3>
-                        </div>
-                    </div>
-                    <div className="form-group row">
-                        <label className="col-12 col-sm-4 col-md-4 col-lg-3 col-form-label">
-                            New Password
-                        </label>
-                        <div className="col-12 col-sm-8 col-md-8 col-lg-7">
-                            <input
-                                className="form-control"
-                                type="password"
-                                onChange={(e) => setPassword(e.target.value)}
-                            />
-                        </div>
-                    </div>
-                    <div className="form-group row">
-                        <label className="col-12 col-sm-4 col-md-4 col-lg-3 col-form-label">
-                            Re Type New Password
-                        </label>
-                        <div className="col-12 col-sm-8 col-md-8 col-lg-7">
-                            <input
-                                className="form-control"
-                                type="password"
-                                onChange={(e) => setRePassword(e.target.value)}
-                            />
-                        </div>
-                    </div>
-                </div>
-                <div
-                    className={`alert alert-${alertType} alert-dismissible fade show`}
-                    role="alert"
-                    style={{ display: `${alertVisible ? "" : "none"}` }}
-                >
-                    {alertMessage}
-                    <button
-                        type="button"
-                        className="btn-close"
-                        data-bs-dismiss="alert"
-                        aria-label="Close"
-                    ></button>
-                </div>
-                <Toaster position="top-right" reverseOrder={true} />
                 <div className="">
                     <div className="">
                         <div className="row">

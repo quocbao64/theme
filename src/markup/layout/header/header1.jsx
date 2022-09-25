@@ -13,6 +13,7 @@ class Header extends Component {
         this.state = {
             id: Cookies.get("id"),
             username: Cookies.get("username"),
+            role: Cookies.get("roles"),
             isExpand: false,
         };
     }
@@ -70,6 +71,7 @@ class Header extends Component {
         Cookies.remove("id");
         Cookies.remove("username");
         Cookies.remove("access_token");
+        Cookies.remove("roles");
         this.setState({
             id: undefined,
         });
@@ -140,6 +142,16 @@ class Header extends Component {
                                                               }
                                                     }
                                                 >
+                                                    {this.state.role ===
+                                                    "ROLE_ADMIN" ? (
+                                                        <li>
+                                                            <Link to="/admin/dashboard">
+                                                                Admin
+                                                            </Link>
+                                                        </li>
+                                                    ) : (
+                                                        ""
+                                                    )}
                                                     <li>
                                                         <Link to="/profile">
                                                             Profile

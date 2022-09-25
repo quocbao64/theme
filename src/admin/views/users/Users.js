@@ -7,6 +7,7 @@ import {
     CTableBody,
     CTableDataCell,
     CAvatar,
+    CButton,
 } from "@coreui/react";
 import { AppFooter, AppHeader, AppSidebar } from "../../components";
 import CIcon from "@coreui/icons-react";
@@ -14,27 +15,47 @@ import { cibCcMastercard, cifUs, cilPeople } from "@coreui/icons";
 import avatar1 from "../../assets/images/avatars/1.jpg";
 import { Link } from "react-router-dom";
 import { adminApi } from "../../../api/adminApi";
+import toast, { Toaster } from "react-hot-toast";
 
 const Users = () => {
     const [listUser, setListUser] = useState([]);
+    const [isModify, setIsModify] = useState(false);
 
     const getListUser = async () => {
         try {
             const response = await adminApi.getListUser();
-            console.log(response);
             setListUser(response);
         } catch (responseError) {
             console.log(responseError);
         }
     };
 
+    const handleUpdateActiveUser = async (e) => {
+        try {
+            const params = {
+                username: e?.username,
+                status: e?.active,
+            };
+            const response = await adminApi.updateActiveUser(params);
+            toast.success(response?.message, {
+                duration: 2000,
+            });
+            setIsModify(!isModify);
+        } catch (responseError) {
+            toast.error(responseError, {
+                duration: 2000,
+            });
+        }
+    };
+
     useEffect(() => {
         getListUser();
-    }, []);
+    }, [isModify]);
 
     return (
         <div>
             <AppSidebar />
+            <Toaster position="top-center" reverseOrder={false} />
             <div className="wrapper d-flex flex-column min-vh-100 bg-light">
                 <AppHeader />
                 <div className="body flex-grow-1 px-3">
@@ -54,6 +75,9 @@ const Users = () => {
                                 <CTableHeaderCell className="text-center">
                                     Status
                                 </CTableHeaderCell>
+                                <CTableHeaderCell className="text-center">
+                                    Action
+                                </CTableHeaderCell>
                             </CTableRow>
                         </CTableHead>
                         <CTableBody>
@@ -65,41 +89,25 @@ const Users = () => {
                                     <CTableDataCell className="text-center">
                                         <CAvatar
                                             size="md"
-                                            src="../../assets/images/avatars/1.jpg"
+                                            src={avatar1}
                                             status="active"
                                         />
                                     </CTableDataCell>
                                     <CTableDataCell>
                                         <div>
-                                            <Link
-                                                to={"/admin/users/" + item?.id}
-                                            >
-                                                {item?.fullname}
-                                            </Link>
+                                            {item?.fullname || item.email}
                                         </div>
                                     </CTableDataCell>
                                     <CTableDataCell>
-                                        <div className="clearfix d-flex flex-column">
-                                            {item?.roles.map((role, index) => (
-                                                <div
-                                                    className="float-start"
-                                                    key={index}
-                                                >
-                                                    <strong>
-                                                        {role?.name?.replace(
-                                                            "ROLE_",
-                                                            ""
-                                                        )}
-                                                    </strong>
-                                                </div>
-                                            ))}
-                                        </div>
+                                        <strong className="clearfix d-flex flex-column">
+                                            {item?.role?.replace("ROLE_", "")}
+                                        </strong>
                                     </CTableDataCell>
                                     <CTableDataCell className="text-center ">
-                                        <div className="d-flex align-items-center">
+                                        <div className="d-flex align-items-center justify-content-center">
                                             <span
                                                 className={`avatar-status ${
-                                                    item?.isActive
+                                                    item?.active
                                                         ? "bg-success"
                                                         : "bg-warning"
                                                 } mx-2`}
@@ -108,10 +116,34 @@ const Users = () => {
                                                 }}
                                             ></span>
                                             <strong>
-                                                {item?.isActive
+                                                {item?.active
                                                     ? "Active"
                                                     : "Inactive"}
                                             </strong>
+                                        </div>
+                                    </CTableDataCell>
+                                    <CTableDataCell className="text-center ">
+                                        <div className="d-flex align-items-center justify-content-center">
+                                            <CButton
+                                                href={
+                                                    "/react/admin/users/" +
+                                                    item?.username
+                                                }
+                                                color="primary"
+                                            >
+                                                Edit
+                                            </CButton>
+                                            <div className="p-1"></div>
+                                            <CButton
+                                                color="warning"
+                                                onClick={() =>
+                                                    handleUpdateActiveUser(item)
+                                                }
+                                            >
+                                                {item?.active
+                                                    ? "Deactive"
+                                                    : "Active"}
+                                            </CButton>
                                         </div>
                                     </CTableDataCell>
                                 </CTableRow>

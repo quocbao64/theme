@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 
 // Elements
 import BackToTop from "./elements/back-top";
@@ -44,6 +44,8 @@ import Users from "../admin/views/users/Users";
 import Dashboard from "../admin/views/dashboard/Dashboard";
 import UserDetail from "../admin/views/user-detail/UserDetail";
 import DefaultLayout from "../admin/layout/DefaultLayout";
+import Cookies from "js-cookie";
+import Error401 from "./pages/error-401";
 
 class Markup extends Component {
     render() {
@@ -115,21 +117,17 @@ class Markup extends Component {
                         <Route path="/contact-us" exact component={Contact1} />
 
                         {/* admin  */}
-                        <Route
-                            path="/admin/dashboard"
-                            exact
-                            component={() => <Dashboard />}
-                        />
-                        <Route
-                            path="/admin/users"
-                            exact
-                            component={() => <Users />}
-                        />
-                        <Route
-                            path="/admin/users/:id"
-                            exact
-                            component={() => <UserDetail />}
-                        />
+                        <PrivateRoute path="/admin/dashboard" exact>
+                            <Dashboard />
+                        </PrivateRoute>
+                        <PrivateRoute path="/admin/users" exact>
+                            <Users />
+                        </PrivateRoute>
+                        <PrivateRoute path="/admin/users/:username" exact>
+                            <UserDetail />
+                        </PrivateRoute>
+
+                        <Route path="/error-401" exact component={Error401} />
                     </Switch>
 
                     <PageScrollTop />
@@ -139,6 +137,28 @@ class Markup extends Component {
             </>
         );
     }
+}
+
+function PrivateRoute({ children, ...rest }) {
+    const isAuthenticated = Cookies.get("roles") === "ROLE_ADMIN";
+    console.log(isAuthenticated);
+    return (
+        <Route
+            {...rest}
+            render={({ location }) =>
+                isAuthenticated ? (
+                    children
+                ) : (
+                    <Redirect
+                        to={{
+                            pathname: "/error-401",
+                            state: { from: location },
+                        }}
+                    />
+                )
+            }
+        />
+    );
 }
 
 export default Markup;
