@@ -29,4 +29,14 @@ export const userApi = {
         const url = "/api/account/update-info";
         return axiosApi.put(url, params);
     },
+    uploadAvatar: (params) => {
+        const url = "/api/account/upload-avatar";
+        return axiosApi.post(url, params);
+    },
+
+    // Web Contact
+    sendContact: (params) => {
+        const url = "/api/web-contact/add";
+        return axiosApi.post(url, params);
+    },
 };

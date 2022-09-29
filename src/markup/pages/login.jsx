@@ -8,6 +8,7 @@ import bannerImg from "../../images/background/bg2.jpg";
 import { userApi } from "../../api/userApi";
 import GoogleLogin from "react-google-login";
 import { useScript } from "../../hooks/useScript";
+import toast, { Toaster } from "react-hot-toast";
 
 function Login(props) {
     const [username, setUsername] = useState();
@@ -24,7 +25,6 @@ function Login(props) {
     };
 
     useScript("https://accounts.google.com/gsi/client", () => {
-        console.log("aaa");
         window.google.accounts.id.initialize({
             client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
             callback: onGoogleSignIn,
@@ -65,15 +65,28 @@ function Login(props) {
             Cookies.set("access_token", response?.accessToken);
             Cookies.set("roles", response?.roles);
             history.push("/");
+            toast.success("Login sucessfully", {
+                duration: 2000,
+            });
+            setTimeout(() => {
+                history.push("/login");
+            }, 2000);
         } catch (responseError) {
-            setAlertMessage(responseError?.data?.message);
-            setAlertVisible(true);
-            setPopupAlertType("danger");
+            if (responseError?.data) {
+                setAlertMessage(responseError?.data?.message);
+                setAlertVisible(true);
+                setPopupAlertType("danger");
+            } else {
+                toast.error("Server Error!", {
+                    duration: 5000,
+                });
+            }
         }
     };
 
     return (
         <>
+            <Toaster position="top-center" reverseOrder={false} />
             <div className="account-form">
                 <div
                     className="account-head"

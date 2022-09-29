@@ -24,6 +24,7 @@ function Profile(props) {
     const getUsetProfile = async () => {
         try {
             const response = await userApi.getUserDetail();
+            console.log(response?.avatar + ": " + typeof response?.avatar);
             setUser(response);
         } catch (responseError) {
             console.log(responseError);
@@ -67,9 +68,13 @@ function Profile(props) {
                                     <div className="row">
                                         <div className="col-lg-4 col-md-5 col-sm-12 m-b30">
                                             <div className="profile-bx text-center">
-                                                <div className="user-profile-thumb">
+                                                <div className="user-profile-thumb ">
                                                     <img
-                                                        src={profilePic1}
+                                                        src={
+                                                            user?.avatar ||
+                                                            profilePic1
+                                                        }
+                                                        className="w-100 h-100"
                                                         alt=""
                                                     />
                                                 </div>

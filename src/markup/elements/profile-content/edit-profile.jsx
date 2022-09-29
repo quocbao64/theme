@@ -6,13 +6,33 @@ import { userApi } from "../../../api/userApi";
 function EditProfile({ stateChanger, state, user }) {
     const [fullname, setFullname] = useState();
     const [phoneNumber, setPhoneNumber] = useState();
+    const [username, setUsername] = useState();
+    const [avatar, setAvatar] = useState();
     const [alertMessage, setAlertMessage] = useState();
     const [alertVisible, setAlertVisible] = useState(false);
     const [alertType, setPopupAlertType] = useState("primary");
+    const acceptedFileType = ["image/jpg", "image/png", "image/jpeg"];
 
     const handleChangeProfile = async () => {
         try {
+            //upload avatar
+            if (avatar !== null && !acceptedFileType.includes(avatar?.type)) {
+                setAlertMessage("file type not accept");
+                setAlertVisible(true);
+                setPopupAlertType("error");
+                return;
+            } else {
+                const formData = new FormData();
+                formData.append("avatar", avatar, avatar?.name);
+                const responseUploadAvatar = await userApi.uploadAvatar(
+                    formData
+                );
+                console.log(responseUploadAvatar);
+            }
+
+            //update profile
             const param = {
+                username: username,
                 fullname: fullname,
                 phoneNumber: phoneNumber,
             };
@@ -63,6 +83,19 @@ function EditProfile({ stateChanger, state, user }) {
                     </div>
                     <div className="form-group row">
                         <label className="col-12 col-sm-4 col-md-4 col-lg-3 col-form-label">
+                            Username
+                        </label>
+                        <div className="col-12 col-sm-8 col-md-8 col-lg-7">
+                            <input
+                                className="form-control"
+                                type="text"
+                                defaultValue={user?.username}
+                                onChange={(e) => setUsername(e.target.value)}
+                            />
+                        </div>
+                    </div>
+                    <div className="form-group row">
+                        <label className="col-12 col-sm-4 col-md-4 col-lg-3 col-form-label">
                             Full Name
                         </label>
                         <div className="col-12 col-sm-8 col-md-8 col-lg-7">
@@ -84,6 +117,19 @@ function EditProfile({ stateChanger, state, user }) {
                                 type="text"
                                 onChange={(e) => setPhoneNumber(e.target.value)}
                                 defaultValue={user?.phoneNumber}
+                            />
+                        </div>
+                    </div>
+                    <div className="form-group row">
+                        <label className="col-12 col-sm-4 col-md-4 col-lg-3 col-form-label">
+                            Upload Avatar
+                        </label>
+                        <div className="col-12 col-sm-8 col-md-8 col-lg-7">
+                            <input
+                                className="form-control"
+                                type="file"
+                                accept=".jpg, .png"
+                                onChange={(e) => setAvatar(e.target.files[0])}
                             />
                         </div>
                     </div>

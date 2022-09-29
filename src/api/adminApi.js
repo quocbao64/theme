@@ -21,4 +21,18 @@ export const adminApi = {
         const url = "/api/admin/users/detail";
         return axiosApi.post(url, params);
     },
+
+    // Web Contact
+    getAllContact: () => {
+        const url = "/api/admin/web-contact/";
+        return axiosApi.get(url);
+    },
+    updateStatusContact: (params, id) => {
+        const url = `/api/admin/web-contact/update-status?id=${id}`;
+        return axiosApi.put(url, params);
+    },
+    deleteContact: (id) => {
+        const url = `/api/admin/web-contact/delete?id=${id}`;
+        return axiosApi.delete(url);
+    },
 };
