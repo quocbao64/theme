@@ -24,7 +24,7 @@ function Profile(props) {
     const getUsetProfile = async () => {
         try {
             const response = await userApi.getUserDetail();
-            console.log(response?.avatar + ": " + typeof response?.avatar);
+            console.log(response);
             setUser(response);
         } catch (responseError) {
             console.log(responseError);

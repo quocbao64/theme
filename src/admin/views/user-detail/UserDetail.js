@@ -24,13 +24,14 @@ function UserDetail(props) {
     const [listRole, setListRole] = useState([]);
     const [listUser, setListUser] = useState();
     const [user, setUser] = useState();
+    const [fullname, setFullname] = useState();
+    const [phone, setPhone] = useState();
     const location = useLocation();
     const [option, setOption] = useState();
 
     const getListUser = async () => {
         try {
             const response = await adminApi.getListUser();
-            console.log(response);
             setListUser(response);
         } catch (responseError) {
             console.log(responseError);
@@ -56,7 +57,6 @@ function UserDetail(props) {
                 username: username,
             };
             const response = await adminApi.getUserByUsername(params);
-            console.log(response);
             setUser(response);
         } catch (responseError) {
             toast.error(responseError?.message, {
@@ -65,16 +65,30 @@ function UserDetail(props) {
         }
     };
 
-    const handleUpdateRole = async () => {
+    const handleUpdateRoleAndProfile = async () => {
         try {
             const params = {
                 username: user?.username,
                 role: option,
             };
-            const response = await adminApi.updateRoleUser(params);
-            toast.success(response?.message, {
+            const paramsProfile = {
+                username: user?.username,
+                fullname: fullname,
+                phoneNumber: phone,
+            };
+            if (option !== user.role && option !== undefined) {
+                const response = await adminApi.updateRoleUser(params);
+                toast.success(response?.message, {
+                    duration: 2000,
+                });
+            }
+            const responseProfile = await adminApi.updateUserProfile(
+                paramsProfile
+            );
+            toast.success(responseProfile?.message, {
                 duration: 2000,
             });
+            getUserById();
         } catch (responseError) {
             toast.error(responseError?.message, {
                 duration: 2000,
@@ -105,6 +119,7 @@ function UserDetail(props) {
                                         Email
                                     </CFormLabel>
                                     <CFormInput
+                                        disabled
                                         type="email"
                                         id="exampleFormControlInput1"
                                         placeholder="name@example.com"
@@ -120,6 +135,9 @@ function UserDetail(props) {
                                         id="exampleFormControlInput1"
                                         placeholder=""
                                         defaultValue={user?.fullname}
+                                        onChange={(e) =>
+                                            setFullname(e.target.value)
+                                        }
                                     />
                                 </div>
                                 <div className="mb-3">
@@ -131,13 +149,10 @@ function UserDetail(props) {
                                         id="exampleFormControlInput1"
                                         placeholder=""
                                         defaultValue={user?.phoneNumber}
+                                        onChange={(e) =>
+                                            setPhone(e.target.value)
+                                        }
                                     />
-                                </div>
-                                <div className="mb-3">
-                                    <CFormLabel htmlFor="formFile">
-                                        Upload avatar
-                                    </CFormLabel>
-                                    <CFormInput type="file" id="formFile" />
                                 </div>
                                 <div className="mb-3">
                                     <CFormLabel htmlFor="formFile">
@@ -176,7 +191,11 @@ function UserDetail(props) {
                                     </CFormSelect>
                                 </div>
                                 <div className="mb-3">
-                                    <CButton onClick={() => handleUpdateRole()}>
+                                    <CButton
+                                        onClick={() =>
+                                            handleUpdateRoleAndProfile()
+                                        }
+                                    >
                                         Save
                                     </CButton>
                                 </div>

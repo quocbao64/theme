@@ -269,6 +269,7 @@ function Footer1(props) {
                                     <CButton
                                         style={{ float: "right" }}
                                         onClick={() => handleSendContact()}
+                                        className="mb-3"
                                     >
                                         Send
                                     </CButton>

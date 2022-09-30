@@ -64,13 +64,12 @@ function Login(props) {
             Cookies.set("username", response?.username);
             Cookies.set("access_token", response?.accessToken);
             Cookies.set("roles", response?.roles);
-            history.push("/");
             toast.success("Login sucessfully", {
-                duration: 2000,
+                duration: 1500,
             });
             setTimeout(() => {
-                history.push("/login");
-            }, 2000);
+                history.push("/");
+            }, 1500);
         } catch (responseError) {
             if (responseError?.data) {
                 setAlertMessage(responseError?.data?.message);
@@ -129,7 +128,7 @@ function Login(props) {
                                                 name="name"
                                                 type="text"
                                                 required=""
-                                                placeholder="Your Name"
+                                                placeholder="Your Username"
                                                 className="form-control"
                                                 onChange={(e) =>
                                                     setUsername(e.target.value)

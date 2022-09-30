@@ -47,6 +47,7 @@ import DefaultLayout from "../admin/layout/DefaultLayout";
 import Cookies from "js-cookie";
 import Error401 from "./pages/error-401";
 import Contact from "../admin/views/contact/contact";
+import ContactDetail from "../admin/views/contact-detail/contact-detail";
 
 class Markup extends Component {
     render() {
@@ -129,6 +130,9 @@ class Markup extends Component {
                         </PrivateRoute>
                         <PrivateRoute path="/admin/contact" exact>
                             <Contact />
+                        </PrivateRoute>
+                        <PrivateRoute path="/admin/contact/:username" exact>
+                            <ContactDetail />
                         </PrivateRoute>
 
                         <Route path="/error-401" exact component={Error401} />

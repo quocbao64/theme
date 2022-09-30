@@ -33,6 +33,10 @@ export const userApi = {
         const url = "/api/account/upload-avatar";
         return axiosApi.post(url, params);
     },
+    getAvatar: (imageName) => {
+        const url = "/api/account/downloadFile/" + imageName;
+        return axiosApi.get(url);
+    },
 
     // Web Contact
     sendContact: (params) => {

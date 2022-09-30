@@ -13,13 +13,14 @@ import { AppFooter, AppHeader, AppSidebar } from "../../components";
 import CIcon from "@coreui/icons-react";
 import { cibCcMastercard, cifUs, cilPeople } from "@coreui/icons";
 import avatar1 from "../../assets/images/avatars/1.jpg";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { adminApi } from "../../../api/adminApi";
 import toast, { Toaster } from "react-hot-toast";
 
 const Contact = () => {
     const [listContact, setListContact] = useState([]);
     const [isModify, setIsModify] = useState(false);
+    const history = useHistory();
 
     const getListContact = async () => {
         try {
@@ -89,6 +90,7 @@ const Contact = () => {
                                 <CTableHeaderCell>
                                     Phone Number
                                 </CTableHeaderCell>
+                                <CTableHeaderCell>Message</CTableHeaderCell>
                                 <CTableHeaderCell className="text-center">
                                     Action
                                 </CTableHeaderCell>
@@ -100,28 +102,73 @@ const Contact = () => {
                                     v-for="item in tableItems"
                                     key={index}
                                 >
-                                    <CTableDataCell className="text-center">
+                                    <CTableDataCell
+                                        className="text-center"
+                                        style={{
+                                            verticalAlign: "inherit",
+                                        }}
+                                    >
                                         <CAvatar
                                             size="md"
                                             src={avatar1}
                                             status="active"
                                         />
                                     </CTableDataCell>
-                                    <CTableDataCell>
+                                    <CTableDataCell
+                                        style={{
+                                            verticalAlign: "inherit",
+                                        }}
+                                    >
                                         <div>{item?.fullName}</div>
                                     </CTableDataCell>
-                                    <CTableDataCell>
+                                    <CTableDataCell
+                                        style={{
+                                            verticalAlign: "inherit",
+                                        }}
+                                    >
                                         <div>{item?.email}</div>
                                     </CTableDataCell>
-                                    <CTableDataCell>
+                                    <CTableDataCell
+                                        style={{
+                                            verticalAlign: "inherit",
+                                        }}
+                                    >
                                         <div>{item?.address}</div>
                                     </CTableDataCell>
-                                    <CTableDataCell>
+                                    <CTableDataCell
+                                        style={{
+                                            verticalAlign: "inherit",
+                                        }}
+                                    >
                                         <div>{item?.phoneNumber}</div>
                                     </CTableDataCell>
+                                    <CTableDataCell
+                                        style={{
+                                            verticalAlign: "inherit",
+                                        }}
+                                    >
+                                        <div>{item?.message}</div>
+                                    </CTableDataCell>
                                     <CTableDataCell className="text-center ">
-                                        <div className="d-flex align-items-center justify-content-center">
+                                        <div className="">
                                             <CButton
+                                                className="mb-2"
+                                                style={{ width: "135px" }}
+                                                color="primary"
+                                                onClick={() =>
+                                                    history.push(
+                                                        "/admin/contact/" +
+                                                            item?.id
+                                                    )
+                                                }
+                                            >
+                                                Edit
+                                            </CButton>
+                                        </div>
+                                        <div className="">
+                                            <CButton
+                                                className="mb-2"
+                                                style={{ width: "135px" }}
                                                 color="warning"
                                                 onClick={() =>
                                                     handleUpdateStatus(item)
@@ -131,9 +178,11 @@ const Contact = () => {
                                                     ? "Resolved"
                                                     : "Not Resolved"}
                                             </CButton>
+                                        </div>
+                                        <div className="">
                                             <CButton
-                                                className="ms-2"
                                                 color="danger"
+                                                style={{ width: "135px" }}
                                                 onClick={() =>
                                                     handleDeleteContact(item)
                                                 }
