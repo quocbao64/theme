@@ -16,20 +16,22 @@ function EditProfile({ stateChanger, state, user }) {
     const handleChangeProfile = async () => {
         try {
             //upload avatar
-            if (avatar !== null && !acceptedFileType.includes(avatar?.type)) {
-                setAlertMessage("file type not accept");
-                setAlertVisible(true);
-                setPopupAlertType("error");
-                return;
-            } else {
-                const formData = new FormData();
-                formData.append("avatar", avatar, avatar?.name);
-                console.log(formData);
-                const responseUploadAvatar = await userApi.uploadAvatar(
-                    formData
-                );
-                console.log(responseUploadAvatar);
-            }
+            if (avatar !== undefined)
+                if (!acceptedFileType.includes(avatar?.type)) {
+                    console.log(avatar);
+                    setAlertMessage("file type not accept");
+                    setAlertVisible(true);
+                    setPopupAlertType("error");
+                    return;
+                } else {
+                    const formData = new FormData();
+                    formData.append("avatar", avatar, avatar?.name);
+                    console.log(formData);
+                    const responseUploadAvatar = await userApi.uploadAvatar(
+                        formData
+                    );
+                    console.log(responseUploadAvatar);
+                }
 
             //update profile
             const param = {
