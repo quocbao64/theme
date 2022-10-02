@@ -59,7 +59,6 @@ function Login(props) {
             };
 
             const response = await userApi.loginAccount(param);
-            console.log(response);
             Cookies.set("id", response?.id);
             Cookies.set("username", response?.username);
             Cookies.set("access_token", response?.accessToken);

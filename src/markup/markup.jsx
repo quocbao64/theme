@@ -42,12 +42,15 @@ import ForgetPasswordInput from "./pages/forget-password-input";
 
 import Users from "../admin/views/users/Users";
 import Dashboard from "../admin/views/dashboard/Dashboard";
-import UserDetail from "../admin/views/user-detail/UserDetail";
+import UserDetail from "../admin/views/users/UserDetail";
 import DefaultLayout from "../admin/layout/DefaultLayout";
 import Cookies from "js-cookie";
 import Error401 from "./pages/error-401";
 import Contact from "../admin/views/contact/contact";
-import ContactDetail from "../admin/views/contact-detail/contact-detail";
+import ContactDetail from "../admin/views/contact/contact-detail";
+import Subjects from "../admin/views/subjects/subjects";
+import { useState } from "react";
+import SubjectDetail from "../admin/views/subjects/subject-detail";
 
 class Markup extends Component {
     render() {
@@ -134,6 +137,12 @@ class Markup extends Component {
                         <PrivateRoute path="/admin/contact/:username" exact>
                             <ContactDetail />
                         </PrivateRoute>
+                        <PrivateRoute path="/admin/subjects" exact>
+                            <Subjects />
+                        </PrivateRoute>
+                        <PrivateRoute path="/admin/subjects/:id" exact>
+                            <SubjectDetail />
+                        </PrivateRoute>
 
                         <Route path="/error-401" exact component={Error401} />
                     </Switch>
@@ -148,8 +157,20 @@ class Markup extends Component {
 }
 
 function PrivateRoute({ children, ...rest }) {
-    const isAuthenticated = Cookies.get("roles") === "ROLE_ADMIN";
-    console.log(isAuthenticated);
+    let isAuthenticated = false;
+    if (Cookies.get("roles") === "ROLE_ADMIN") isAuthenticated = true;
+    else {
+        if (
+            rest?.path?.includes("contact") &&
+            Cookies.get("roles") === "ROLE_SUPPORTER"
+        )
+            isAuthenticated = true;
+        else if (
+            rest?.path?.includes("subjects") &&
+            Cookies.get("roles") === "ROLE_MANAGER"
+        )
+            isAuthenticated = true;
+    }
     return (
         <Route
             {...rest}

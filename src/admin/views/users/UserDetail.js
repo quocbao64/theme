@@ -22,8 +22,8 @@ import {
 
 function UserDetail(props) {
     const [listRole, setListRole] = useState([]);
-    const [listUser, setListUser] = useState();
-    const [user, setUser] = useState();
+    const [listUser, setListUser] = useState([]);
+    const [user, setUser] = useState({});
     const [fullname, setFullname] = useState();
     const [phone, setPhone] = useState();
     const location = useLocation();

@@ -26,6 +26,15 @@ export const adminApi = {
         return axiosApi.post(url, params);
     },
 
+    getListManager: () => {
+        const url = "/api/admin/users/manager-list";
+        return axiosApi.get(url);
+    },
+    getListExpert: () => {
+        const url = "/api/admin/users/expert-list";
+        return axiosApi.get(url);
+    },
+
     // Web Contact
     getAllContact: () => {
         const url = "/api/admin/web-contact/";
@@ -41,6 +50,28 @@ export const adminApi = {
     },
     updateContact: (params, id) => {
         const url = `/api/admin/web-contact/update?id=${id}`;
+        return axiosApi.put(url, params);
+    },
+
+    // subject
+    getAllSubject: () => {
+        const url = "/api/subjects/";
+        return axiosApi.get(url);
+    },
+    getSubjectDetail: (code) => {
+        const url = `/api/subjects/${code}`;
+        return axiosApi.get(url);
+    },
+    addSubject: (params) => {
+        const url = "/api/subjects/create";
+        return axiosApi.post(url, params);
+    },
+    updateSubject: (params, id) => {
+        const url = `/api/subjects/update?id=${id}`;
+        return axiosApi.put(url, params);
+    },
+    managerUpdateSubject: (params) => {
+        const url = "/api/subjects/manager-update";
         return axiosApi.put(url, params);
     },
 };

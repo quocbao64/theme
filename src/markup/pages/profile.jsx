@@ -18,7 +18,7 @@ import profilePic1 from "../../images/profile/pic1.jpg";
 import { userApi } from "../../api/userApi";
 
 function Profile(props) {
-    const [user, setUser] = useState();
+    const [user, setUser] = useState({});
     const [state, setState] = useState(false);
 
     const getUsetProfile = async () => {

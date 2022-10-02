@@ -15,6 +15,7 @@ class Header extends Component {
             username: Cookies.get("username"),
             role: Cookies.get("roles"),
             isExpand: false,
+            acceptRole: ["ROLE_ADMIN", "ROLE_SUPPORTER", "ROLE_MANAGER"],
         };
     }
 
@@ -146,6 +147,20 @@ class Header extends Component {
                                                     "ROLE_ADMIN" ? (
                                                         <li>
                                                             <Link to="/admin/dashboard">
+                                                                Admin
+                                                            </Link>
+                                                        </li>
+                                                    ) : this.state.role ===
+                                                      "ROLE_SUPPORTER" ? (
+                                                        <li>
+                                                            <Link to="/admin/contact">
+                                                                Admin
+                                                            </Link>
+                                                        </li>
+                                                    ) : this.state.role ===
+                                                      "ROLE_MANAGER" ? (
+                                                        <li>
+                                                            <Link to="/admin/subjects">
                                                                 Admin
                                                             </Link>
                                                         </li>
