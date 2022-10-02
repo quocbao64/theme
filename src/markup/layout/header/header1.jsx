@@ -6,7 +6,7 @@ import Sticky from "react-stickynode";
 import logo from "../../../images/logo.png";
 import adv from "../../../images/adv/adv.jpg";
 import Cookies from "js-cookie";
-import { CAvatar, CImage } from "@coreui/react";
+import { CAvatar } from "@coreui/react";
 import avatar1 from "../../../admin/assets/images/avatars/1.jpg";
 
 class Header extends Component {
@@ -14,7 +14,7 @@ class Header extends Component {
         super(props);
         this.state = {
             id: Cookies.get("id"),
-            user: JSON.parse(Cookies.get("user")),
+            user: Cookies.get("user"),
             role: Cookies.get("roles"),
             isExpand: false,
             acceptRole: ["ROLE_ADMIN", "ROLE_SUPPORTER", "ROLE_MANAGER"],
@@ -67,6 +67,9 @@ class Header extends Component {
                 current.classList.add("open");
                 console.log("close");
             }
+        }
+        if (this.state.user !== undefined) {
+            this.setState({ user: JSON.parse(this.state.user) });
         }
         console.log(this.state.user);
     }
@@ -132,7 +135,7 @@ class Header extends Component {
                                                     <CAvatar
                                                         src={
                                                             this.state.user
-                                                                .avatar ||
+                                                                ?.avatar ||
                                                             avatar1
                                                         }
                                                     />
