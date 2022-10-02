@@ -108,11 +108,7 @@ const Contact = () => {
                                             verticalAlign: "inherit",
                                         }}
                                     >
-                                        <CAvatar
-                                            size="md"
-                                            src={avatar1}
-                                            status="active"
-                                        />
+                                        {item?.id}
                                     </CTableDataCell>
                                     <CTableDataCell
                                         style={{

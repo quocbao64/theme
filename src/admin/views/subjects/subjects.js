@@ -12,6 +12,7 @@ import {
     CTableHeaderCell,
     CTableRow,
 } from "@coreui/react";
+import Cookies from "js-cookie";
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -65,6 +66,8 @@ function Subjects() {
         },
     ];
     const [listSubject, setListSubject] = useState([]);
+    const role = JSON.parse(Cookies.get("user"))?.role;
+    const isNotAdmin = role !== "ROLE_ADMIN" ? true : false;
 
     const getAllSubject = async () => {
         try {
@@ -105,6 +108,7 @@ function Subjects() {
                         type="button"
                         color="primary"
                         id="button-addon2"
+                        disabled={isNotAdmin}
                         href="/react/admin/subjects/create"
                     >
                         Create New Subject

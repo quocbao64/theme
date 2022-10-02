@@ -24,6 +24,7 @@ function EditProfile({ stateChanger, state, user }) {
             } else {
                 const formData = new FormData();
                 formData.append("avatar", avatar, avatar?.name);
+                console.log(formData);
                 const responseUploadAvatar = await userApi.uploadAvatar(
                     formData
                 );
@@ -121,6 +122,16 @@ function EditProfile({ stateChanger, state, user }) {
                         </div>
                     </div>
                     <div className="form-group row">
+                        <div className="col-12 col-sm-4 col-md-4 col-lg-3 col-form-label"></div>
+                        <div className="col-12 col-sm-8 col-md-8 col-lg-7">
+                            <img
+                                style={{ width: "100px", height: "100px" }}
+                                src={user?.avatar}
+                                alt=""
+                            />
+                        </div>
+                    </div>
+                    <div className="form-group row">
                         <label className="col-12 col-sm-4 col-md-4 col-lg-3 col-form-label">
                             Upload Avatar
                         </label>
@@ -137,7 +148,7 @@ function EditProfile({ stateChanger, state, user }) {
                 <div className="">
                     <div className="">
                         <div className="row">
-                            <div className="col-12 col-sm-3 col-md-3 col-lg-2"></div>
+                            <div className="col-12 col-sm-4 col-md-4 col-lg-3 col-form-label"></div>
                             <div className="col-12 col-sm-9 col-md-9 col-lg-7 d-flex align-items-center">
                                 <span
                                     onClick={() => handleChangeProfile()}

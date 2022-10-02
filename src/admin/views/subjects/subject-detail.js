@@ -9,9 +9,10 @@ import {
     CFormSelect,
 } from "@coreui/react";
 import { _ } from "core-js";
+import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import { useLocation } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { adminApi } from "../../../api/adminApi";
 import { AppFooter, AppHeader, AppSidebar } from "../../components";
 
@@ -27,7 +28,10 @@ function SubjectDetail(props) {
     const [manager, setManager] = useState();
     const [expert, setExpert] = useState();
     const [image, setImage] = useState();
+    const role = JSON.parse(Cookies.get("user"))?.role;
+    const isNotAdmin = role !== "ROLE_ADMIN" ? true : false;
     const location = useLocation();
+    const history = useHistory();
     const id = location.pathname.substring(
         "/admin/subjects/".length,
         location.pathname.length
@@ -79,28 +83,52 @@ function SubjectDetail(props) {
 
     const handleUpdateSubject = async () => {
         try {
-            console.log(status);
-            const params = {
-                code: codeSubject,
-                name: name,
-                status: status,
-                note: note,
-                manager: manager,
-                expert: expert,
-            };
-            const formData = new FormData();
-            if (image) {
-                formData.append("image", image, image?.name);
-                Object.assign(params, formData);
+            if (isNotAdmin) {
+                const params = {
+                    id: id,
+                    status: status,
+                    expert: expert,
+                };
+
+                const response = await adminApi.managerUpdateSubject(params);
+                console.log(response);
+                toast.success(response?.message, {
+                    duration: 2000,
+                });
+            } else {
+                let params = {};
+                if (image) {
+                    const formData = new FormData();
+                    formData.append("image", image);
+                    params = {
+                        code: codeSubject,
+                        name: name,
+                        status: status,
+                        note: note,
+                        manager: manager,
+                        expert: expert,
+                        formData,
+                    };
+                } else {
+                    params = {
+                        code: codeSubject,
+                        name: name,
+                        status: status,
+                        note: note,
+                        manager: manager,
+                        expert: expert,
+                    };
+                }
+                const response =
+                    type === 1
+                        ? await adminApi.updateSubject(params, id)
+                        : await adminApi.addSubject(params);
+                console.log(response);
+                toast.success(response?.message, {
+                    duration: 2000,
+                });
             }
-            const response =
-                type === 1
-                    ? await adminApi.updateSubject(params, id)
-                    : await adminApi.addSubject(params);
-            console.log(response);
-            toast.success(response?.message, {
-                duration: 2000,
-            });
+            history.push("/admin/subjects");
         } catch (error) {
             toast.error(error?.message, {
                 duration: 2000,
@@ -113,7 +141,7 @@ function SubjectDetail(props) {
             getAllSubject();
             getSubjectByCode();
         }
-        getListManager();
+        if (role === "ROLE_ADMIN") getListManager();
         getListExpert();
     }, []);
 
@@ -147,6 +175,7 @@ function SubjectDetail(props) {
                                     <CFormInput
                                         type="text"
                                         id="exampleFormControlInput1"
+                                        disabled={isNotAdmin}
                                         defaultValue={
                                             type === 1 ? subject?.code : ""
                                         }
@@ -163,6 +192,7 @@ function SubjectDetail(props) {
                                     <CFormInput
                                         type="text"
                                         id="exampleFormControlInput1"
+                                        disabled={isNotAdmin}
                                         placeholder=""
                                         defaultValue={
                                             type === 1 ? subject?.name : ""
@@ -223,6 +253,7 @@ function SubjectDetail(props) {
                                     <CFormInput
                                         type="text"
                                         id="exampleFormControlInput1"
+                                        disabled={isNotAdmin}
                                         placeholder=""
                                         defaultValue={
                                             type === 1 ? subject?.note : ""
@@ -238,6 +269,7 @@ function SubjectDetail(props) {
                                     </CFormLabel>
                                     <CFormSelect
                                         aria-label="Default select example"
+                                        disabled={isNotAdmin}
                                         onChange={(e) =>
                                             setManager(e.target.value)
                                         }
@@ -338,6 +370,7 @@ function SubjectDetail(props) {
                                     </CFormLabel>
                                     <input
                                         className="form-control"
+                                        disabled={isNotAdmin}
                                         type="file"
                                         accept=".jpg, .png"
                                         defaultValue={subject?.image}

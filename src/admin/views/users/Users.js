@@ -89,7 +89,7 @@ const Users = () => {
                                     <CTableDataCell className="text-center">
                                         <CAvatar
                                             size="md"
-                                            src={avatar1}
+                                            src={item?.avatar || avatar1}
                                             status="active"
                                         />
                                     </CTableDataCell>

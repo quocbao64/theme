@@ -6,13 +6,15 @@ import Sticky from "react-stickynode";
 import logo from "../../../images/logo.png";
 import adv from "../../../images/adv/adv.jpg";
 import Cookies from "js-cookie";
+import { CAvatar, CImage } from "@coreui/react";
+import avatar1 from "../../../admin/assets/images/avatars/1.jpg";
 
 class Header extends Component {
     constructor(props) {
         super(props);
         this.state = {
             id: Cookies.get("id"),
-            username: Cookies.get("username"),
+            user: JSON.parse(Cookies.get("user")),
             role: Cookies.get("roles"),
             isExpand: false,
             acceptRole: ["ROLE_ADMIN", "ROLE_SUPPORTER", "ROLE_MANAGER"],
@@ -66,6 +68,7 @@ class Header extends Component {
                 console.log("close");
             }
         }
+        console.log(this.state.user);
     }
 
     handleLogout() {
@@ -73,6 +76,7 @@ class Header extends Component {
         Cookies.remove("username");
         Cookies.remove("access_token");
         Cookies.remove("roles");
+        Cookies.remove("user");
         this.setState({
             id: undefined,
         });
@@ -84,7 +88,7 @@ class Header extends Component {
                 <header className="header1 rs-nav header-transp arent">
                     <div className="top-bar">
                         <div className="container">
-                            <div className="row d-flex justify-content-between flex-nowrap">
+                            <div className="row d-flex justify-content-between align-items-center flex-nowrap">
                                 <div className="topbar-left w-auto">
                                     <ul>
                                         <li>
@@ -101,8 +105,8 @@ class Header extends Component {
                                         </li>
                                     </ul>
                                 </div>
-                                <div className="topbar-right w-auto d-flex">
-                                    <ul className="d-flex">
+                                <div className="topbar-right w-auto d-flex ">
+                                    <ul className="d-flex align-items-center">
                                         <li>
                                             <select className="header-lang-bx">
                                                 <option data-icon="flag flag-uk">
@@ -125,7 +129,13 @@ class Header extends Component {
                                                     }
                                                     className="mb-0"
                                                 >
-                                                    {this.state.username}
+                                                    <CAvatar
+                                                        src={
+                                                            this.state.user
+                                                                .avatar ||
+                                                            avatar1
+                                                        }
+                                                    />
                                                 </div>
                                                 <ul
                                                     className="sub-menu"

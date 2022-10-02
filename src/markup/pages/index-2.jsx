@@ -11,12 +11,8 @@ import JoinBx from "../elements/join-bx";
 import FeatureContent3 from "../elements/feature-content3";
 import Counter2 from "../elements/counter/counter2";
 import Testimonial1 from "../elements/testimonial1";
-import { useEffect } from "react";
-import { userApi } from "../../api/userApi";
 
 function Index2() {
-    useEffect(() => {}, []);
-
     return (
         <>
             <Header />
