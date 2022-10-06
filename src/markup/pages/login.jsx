@@ -6,7 +6,6 @@ import Cookies from "js-cookie";
 import logoWhite2 from "../../images/logo-white-2.png";
 import bannerImg from "../../images/background/bg2.jpg";
 import { userApi } from "../../api/userApi";
-import GoogleLogin from "react-google-login";
 import { useScript } from "../../hooks/useScript";
 import toast, { Toaster } from "react-hot-toast";
 

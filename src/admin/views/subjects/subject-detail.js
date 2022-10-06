@@ -100,6 +100,7 @@ function SubjectDetail(props) {
                 if (image) {
                     const formData = new FormData();
                     formData.append("image", image);
+                    console.log(formData.get("image"));
                     params = {
                         code: codeSubject,
                         name: name,
@@ -368,6 +369,21 @@ function SubjectDetail(props) {
                                     <CFormLabel htmlFor="formFile">
                                         Upload Image Subject
                                     </CFormLabel>
+                                    {subject?.image ? (
+                                        <div className="mb-3">
+                                            <img
+                                                style={{
+                                                    width: "100px",
+                                                    height: "100px",
+                                                }}
+                                                src={subject?.image}
+                                                alt=""
+                                            />
+                                        </div>
+                                    ) : (
+                                        ""
+                                    )}
+
                                     <input
                                         className="form-control"
                                         disabled={isNotAdmin}

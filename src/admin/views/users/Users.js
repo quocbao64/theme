@@ -1,23 +1,77 @@
 import React, { useEffect, useState } from "react";
-import {
-    CTable,
-    CTableHead,
-    CTableRow,
-    CTableHeaderCell,
-    CTableBody,
-    CTableDataCell,
-    CAvatar,
-    CButton,
-} from "@coreui/react";
+import { CButton } from "@coreui/react";
 import { AppFooter, AppHeader, AppSidebar } from "../../components";
-import CIcon from "@coreui/icons-react";
-import { cibCcMastercard, cifUs, cilPeople } from "@coreui/icons";
-import avatar1 from "../../assets/images/avatars/1.jpg";
-import { Link } from "react-router-dom";
 import { adminApi } from "../../../api/adminApi";
 import toast, { Toaster } from "react-hot-toast";
+import DataTable from "react-data-table-component";
 
 const Users = () => {
+    const columns = [
+        {
+            name: "ID",
+            selector: (row) => row?.id,
+            sortable: true,
+        },
+        {
+            name: "User",
+            selector: (row) => row?.username || row?.email,
+            sortable: true,
+        },
+        {
+            name: "Fullname",
+            selector: (row) => row?.fullname,
+            sortable: true,
+        },
+        {
+            name: "Phone",
+            selector: (row) => row?.phoneNumber,
+            sortable: true,
+        },
+        {
+            name: "Role",
+            selector: (row) => row?.role?.replace("ROLE_", ""),
+            sortable: true,
+        },
+        {
+            name: "Status",
+            selector: (row) => (
+                <div className="d-flex align-items-center justify-content-center">
+                    <span
+                        className={`avatar-status ${
+                            row?.active ? "bg-success" : "bg-warning"
+                        } mx-2`}
+                        style={{
+                            borderBottomWidth: "0",
+                        }}
+                    ></span>
+                    <strong>{row?.active ? "Active" : "Inactive"}</strong>
+                </div>
+            ),
+            sortable: true,
+        },
+        {
+            name: "Action",
+            selector: (row) => (
+                <div className="my-2">
+                    <CButton
+                        href={"/react/admin/users/" + row?.username}
+                        style={{ width: "100px" }}
+                        color="primary"
+                    >
+                        Edit
+                    </CButton>
+                    <div className="p-1"></div>
+                    <CButton
+                        color="warning"
+                        style={{ width: "100px" }}
+                        onClick={() => handleUpdateActiveUser(row)}
+                    >
+                        {row?.active ? "Deactive" : "Active"}
+                    </CButton>
+                </div>
+            ),
+        },
+    ];
     const [listUser, setListUser] = useState([]);
     const [isModify, setIsModify] = useState(false);
 
@@ -59,97 +113,7 @@ const Users = () => {
             <div className="wrapper d-flex flex-column min-vh-100 bg-light">
                 <AppHeader />
                 <div className="body flex-grow-1 px-3">
-                    <CTable
-                        align="middle"
-                        className="mb-0 border"
-                        hover
-                        responsive
-                    >
-                        <CTableHead color="light">
-                            <CTableRow>
-                                <CTableHeaderCell className="text-center">
-                                    <CIcon icon={cilPeople} />
-                                </CTableHeaderCell>
-                                <CTableHeaderCell>User</CTableHeaderCell>
-                                <CTableHeaderCell>Roles</CTableHeaderCell>
-                                <CTableHeaderCell className="text-center">
-                                    Status
-                                </CTableHeaderCell>
-                                <CTableHeaderCell className="text-center">
-                                    Action
-                                </CTableHeaderCell>
-                            </CTableRow>
-                        </CTableHead>
-                        <CTableBody>
-                            {listUser?.map((item, index) => (
-                                <CTableRow
-                                    v-for="item in tableItems"
-                                    key={index}
-                                >
-                                    <CTableDataCell className="text-center">
-                                        <CAvatar
-                                            size="md"
-                                            src={item?.avatar || avatar1}
-                                            status="active"
-                                        />
-                                    </CTableDataCell>
-                                    <CTableDataCell>
-                                        <div>
-                                            {item?.fullname || item.email}
-                                        </div>
-                                    </CTableDataCell>
-                                    <CTableDataCell>
-                                        <strong className="clearfix d-flex flex-column">
-                                            {item?.role?.replace("ROLE_", "")}
-                                        </strong>
-                                    </CTableDataCell>
-                                    <CTableDataCell className="text-center ">
-                                        <div className="d-flex align-items-center justify-content-center">
-                                            <span
-                                                className={`avatar-status ${
-                                                    item?.active
-                                                        ? "bg-success"
-                                                        : "bg-warning"
-                                                } mx-2`}
-                                                style={{
-                                                    borderBottomWidth: "0",
-                                                }}
-                                            ></span>
-                                            <strong>
-                                                {item?.active
-                                                    ? "Active"
-                                                    : "Inactive"}
-                                            </strong>
-                                        </div>
-                                    </CTableDataCell>
-                                    <CTableDataCell className="text-center ">
-                                        <div className="d-flex align-items-center justify-content-center">
-                                            <CButton
-                                                href={
-                                                    "/react/admin/users/" +
-                                                    item?.username
-                                                }
-                                                color="primary"
-                                            >
-                                                Edit
-                                            </CButton>
-                                            <div className="p-1"></div>
-                                            <CButton
-                                                color="warning"
-                                                onClick={() =>
-                                                    handleUpdateActiveUser(item)
-                                                }
-                                            >
-                                                {item?.active
-                                                    ? "Deactive"
-                                                    : "Active"}
-                                            </CButton>
-                                        </div>
-                                    </CTableDataCell>
-                                </CTableRow>
-                            ))}
-                        </CTableBody>
-                    </CTable>
+                    <DataTable columns={columns} data={listUser} pagination />
                 </div>
                 <AppFooter />
             </div>

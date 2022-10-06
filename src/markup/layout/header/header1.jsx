@@ -354,11 +354,6 @@ class Header extends Component {
                                         <li>
                                             <Link to="/blog">Blog</Link>
                                         </li>
-                                        <li>
-                                            <Link to="/contact-us">
-                                                Contact Us
-                                            </Link>
-                                        </li>
                                     </ul>
                                     <div className="nav-social-link">
                                         <Link to="#">
