@@ -73,7 +73,6 @@ function Subjects() {
     const [listSubject, setListSubject] = useState([]);
     const [nameSearch, setNameSearch] = useState();
     const [codeSearch, setCodeSearch] = useState();
-    const [isUpdate, setIsUpdate] = useState(false);
     const role = JSON.parse(Cookies.get("user"))?.role;
     const isNotAdmin = role !== "ROLE_ADMIN" ? true : false;
 
@@ -85,12 +84,6 @@ function Subjects() {
             };
             const response = await adminApi.getAllSubject(params);
             setListSubject(response);
-            console.log(params);
-            console.log(response);
-            console.log(isUpdate);
-            if (response.data !== listSubject) {
-                setIsUpdate(true);
-            } else setIsUpdate(false);
         } catch (responseError) {
             console.log(responseError);
         }
@@ -98,7 +91,7 @@ function Subjects() {
 
     useEffect(() => {
         getAllSubject();
-    }, [isUpdate === true]);
+    }, []);
 
     return (
         <div>
