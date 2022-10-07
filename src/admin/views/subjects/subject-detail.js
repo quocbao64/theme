@@ -28,6 +28,7 @@ function SubjectDetail(props) {
     const [manager, setManager] = useState();
     const [expert, setExpert] = useState();
     const [image, setImage] = useState();
+    const [price, setPrice] = useState();
     const role = JSON.parse(Cookies.get("user"))?.role;
     const isNotAdmin = role !== "ROLE_ADMIN" ? true : false;
     const location = useLocation();
@@ -96,29 +97,19 @@ function SubjectDetail(props) {
                     duration: 2000,
                 });
             } else {
-                let params = {};
+                const params = {
+                    code: codeSubject,
+                    name: name,
+                    status: status,
+                    note: note,
+                    manager: manager,
+                    expert: expert,
+                    price: price,
+                };
                 if (image) {
                     const formData = new FormData();
                     formData.append("image", image);
                     console.log(formData.get("image"));
-                    params = {
-                        code: codeSubject,
-                        name: name,
-                        status: status,
-                        note: note,
-                        manager: manager,
-                        expert: expert,
-                        formData,
-                    };
-                } else {
-                    params = {
-                        code: codeSubject,
-                        name: name,
-                        status: status,
-                        note: note,
-                        manager: manager,
-                        expert: expert,
-                    };
                 }
                 const response =
                     type === 1
@@ -203,6 +194,7 @@ function SubjectDetail(props) {
                                         }
                                     />
                                 </div>
+
                                 <div className="mb-3">
                                     <CFormLabel htmlFor="exampleFormControlInput1">
                                         Status (
@@ -261,6 +253,23 @@ function SubjectDetail(props) {
                                         }
                                         onChange={(e) =>
                                             setNote(e.target.value)
+                                        }
+                                    />
+                                </div>
+                                <div className="mb-3">
+                                    <CFormLabel htmlFor="exampleFormControlInput1">
+                                        Price
+                                    </CFormLabel>
+                                    <CFormInput
+                                        type="text"
+                                        id="exampleFormControlInput1"
+                                        disabled={isNotAdmin}
+                                        placeholder=""
+                                        defaultValue={
+                                            type === 1 ? subject?.price : ""
+                                        }
+                                        onChange={(e) =>
+                                            setPrice(e.target.value)
                                         }
                                     />
                                 </div>

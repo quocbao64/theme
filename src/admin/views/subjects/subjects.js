@@ -39,6 +39,11 @@ function Subjects() {
             sortable: true,
         },
         {
+            name: "Price",
+            selector: (row) => row.price,
+            sortable: true,
+        },
+        {
             name: "Manager",
             selector: (row) => row.manager?.username,
             sortable: true,
@@ -66,14 +71,26 @@ function Subjects() {
         },
     ];
     const [listSubject, setListSubject] = useState([]);
+    const [nameSearch, setNameSearch] = useState();
+    const [codeSearch, setCodeSearch] = useState();
+    const [isUpdate, setIsUpdate] = useState(false);
     const role = JSON.parse(Cookies.get("user"))?.role;
     const isNotAdmin = role !== "ROLE_ADMIN" ? true : false;
 
     const getAllSubject = async () => {
         try {
-            const response = await adminApi.getAllSubject();
-            console.log(response);
+            const params = {
+                name: nameSearch !== undefined ? nameSearch : "",
+                code: codeSearch !== undefined ? codeSearch : "",
+            };
+            const response = await adminApi.getAllSubject(params);
             setListSubject(response);
+            console.log(params);
+            console.log(response);
+            console.log(isUpdate);
+            if (response.data !== listSubject) {
+                setIsUpdate(true);
+            } else setIsUpdate(false);
         } catch (responseError) {
             console.log(responseError);
         }
@@ -81,7 +98,7 @@ function Subjects() {
 
     useEffect(() => {
         getAllSubject();
-    }, []);
+    }, [isUpdate === true]);
 
     return (
         <div>
@@ -90,20 +107,43 @@ function Subjects() {
             <div className="wrapper d-flex flex-column min-vh-100 bg-light">
                 <AppHeader />
                 <CInputGroup className="px-3 pb-3 d-flex justify-content-between">
-                    <CInputGroup style={{ maxWidth: "400px" }}>
-                        <CFormInput
-                            placeholder="Enter a name or subject code"
-                            aria-label="Recipient's username"
-                            aria-describedby="button-addon2"
-                        />
-                        <CButton
-                            type="button"
-                            color="primary"
-                            id="button-addon2"
+                    <div className="d-flex">
+                        <CInputGroup
+                            className="mr-3"
+                            style={{ maxWidth: "300px" }}
                         >
-                            Search
-                        </CButton>
-                    </CInputGroup>
+                            <CFormInput
+                                placeholder="Enter a name"
+                                aria-label="Recipient's username"
+                                aria-describedby="button-addon2"
+                                onChange={(e) => setNameSearch(e.target.value)}
+                            />
+                            <CButton
+                                type="button"
+                                color="primary"
+                                id="button-addon2"
+                                onClick={() => getAllSubject()}
+                            >
+                                Search
+                            </CButton>
+                        </CInputGroup>
+                        <CInputGroup style={{ maxWidth: "300px" }}>
+                            <CFormInput
+                                placeholder="Enter a subject code"
+                                aria-label="Recipient's username"
+                                aria-describedby="button-addon2"
+                                onChange={(e) => setCodeSearch(e.target.value)}
+                            />
+                            <CButton
+                                type="button"
+                                color="primary"
+                                id="button-addon2"
+                                onClick={() => getAllSubject()}
+                            >
+                                Search
+                            </CButton>
+                        </CInputGroup>
+                    </div>
                     <CButton
                         type="button"
                         color="primary"

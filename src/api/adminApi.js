@@ -54,8 +54,8 @@ export const adminApi = {
     },
 
     // subject
-    getAllSubject: () => {
-        const url = "/api/subjects/";
+    getAllSubject: (params) => {
+        const url = `/api/subjects?name=${params?.name}&code=${params?.code}`;
         return axiosApi.get(url);
     },
     getSubjectDetail: (code) => {
