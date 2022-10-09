@@ -63,15 +63,33 @@ export const adminApi = {
         return axiosApi.get(url);
     },
     addSubject: (params) => {
-        const url = "/api/subjects/create";
+        const url = `/api/subjects/create`;
         return axiosApi.post(url, params);
     },
-    updateSubject: (params, id) => {
-        const url = `/api/subjects/update?id=${id}`;
+    updateSubject: (params, id, image) => {
+        const url = `/api/subjects/update?id=${id}&image=${image}`;
         return axiosApi.put(url, params);
     },
     managerUpdateSubject: (params) => {
         const url = "/api/subjects/manager-update";
         return axiosApi.put(url, params);
+    },
+
+    // class
+    getAllClass: () => {
+        const url = "/api/class";
+        return axiosApi.get(url);
+    },
+    getClassDetail: (id) => {
+        const url = `/api/class/${id}`;
+        return axiosApi.get(url);
+    },
+    createClass: (params) => {
+        const url = "/api/class/create";
+        return axiosApi.post(url, params);
+    },
+    updateClass: (params, id) => {
+        const url = `/api/class/update?id=${id}`;
+        return axiosApi.post(url, params);
     },
 };

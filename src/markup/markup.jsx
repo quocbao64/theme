@@ -51,6 +51,8 @@ import ContactDetail from "../admin/views/contact/contact-detail";
 import Subjects from "../admin/views/subjects/subjects";
 import { useState } from "react";
 import SubjectDetail from "../admin/views/subjects/subject-detail";
+import Class from "../admin/views/class/class";
+import ClassDetail from "../admin/views/class/class-detail";
 
 class Markup extends Component {
     render() {
@@ -143,6 +145,12 @@ class Markup extends Component {
                         <PrivateRoute path="/admin/subjects/:id" exact>
                             <SubjectDetail />
                         </PrivateRoute>
+                        <PrivateRoute path="/admin/class" exact>
+                            <Class />
+                        </PrivateRoute>
+                        <PrivateRoute path="/admin/class/:id" exact>
+                            <ClassDetail />
+                        </PrivateRoute>
 
                         <Route path="/error-401" exact component={Error401} />
                     </Switch>
@@ -168,6 +176,12 @@ function PrivateRoute({ children, ...rest }) {
         else if (
             rest?.path?.includes("subjects") &&
             Cookies.get("roles") === "ROLE_MANAGER"
+        )
+            isAuthenticated = true;
+        else if (
+            rest?.path?.includes("class") &&
+            (Cookies.get("roles") === "ROLE_MANAGER" ||
+                Cookies.get("roles") === "ROLE_TRAINER")
         )
             isAuthenticated = true;
     }

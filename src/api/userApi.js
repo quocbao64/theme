@@ -25,8 +25,8 @@ export const userApi = {
         const url = "/api/account/info";
         return axiosApi.get(url);
     },
-    updateInfo: (params) => {
-        const url = "/api/account/update-info";
+    updateInfo: (params, id) => {
+        const url = `/api/account/update-info?id=${id}`;
         return axiosApi.put(url, params);
     },
     uploadAvatar: (params) => {

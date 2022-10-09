@@ -16,25 +16,21 @@ import { useHistory, useLocation } from "react-router-dom";
 import { adminApi } from "../../../api/adminApi";
 import { AppFooter, AppHeader, AppSidebar } from "../../components";
 
-function SubjectDetail(props) {
+function ClassDetail(props) {
     const [listSubject, setListSubject] = useState();
     const [listManager, setListManager] = useState();
-    const [listExpert, setListExpert] = useState();
     const [subject, setSubject] = useState();
-    const [codeSubject, setCodeSubject] = useState();
-    const [name, setName] = useState();
-    const [status, setStatus] = useState(false);
-    const [note, setNote] = useState();
-    const [manager, setManager] = useState();
-    const [expert, setExpert] = useState();
-    const [image, setImage] = useState();
-    const [price, setPrice] = useState();
+    const [packages, setPackages] = useState();
+    const [dateFrom, setDateFrom] = useState();
+    const [dateTo, setDateTo] = useState();
+    const [trainer, setTrainer] = useState();
+    const [status, setStatus] = useState();
     const role = JSON.parse(Cookies.get("user"))?.role;
     const isNotAdmin = role !== "ROLE_ADMIN" ? true : false;
     const location = useLocation();
     const history = useHistory();
     const id = location.pathname.substring(
-        "/admin/subjects/".length,
+        "/admin/class/".length,
         location.pathname.length
     );
     const type = id !== "create" ? 1 : 0;
@@ -71,58 +67,25 @@ function SubjectDetail(props) {
         }
     };
 
-    const getListExpert = async () => {
-        try {
-            const response = await adminApi.getListExpert();
-            setListExpert(response);
-        } catch (responseError) {
-            toast.error(responseError?.message, {
-                duration: 2000,
-            });
-        }
-    };
-
     const handleUpdateSubject = async () => {
         try {
-            if (isNotAdmin) {
-                const params = {
-                    id: id,
-                    status: status,
-                    expert: expert,
-                };
+            const params = {
+                packages: packages,
+                dateFrom: dateFrom,
+                dateTo: dateTo,
+                status: status,
+                trainer: trainer,
+            };
 
-                const response = await adminApi.managerUpdateSubject(params);
-                toast.success(response?.message, {
-                    duration: 2000,
-                });
-            } else {
-                const params = {
-                    code: codeSubject,
-                    name: name,
-                    status: status,
-                    note: note,
-                    manager: manager,
-                    expert: expert,
-                    price: price,
-                };
-
-                const formData = new FormData();
-                formData.append("image", image);
-
-                const response =
-                    type === 1
-                        ? await adminApi.updateSubject(
-                              params,
-                              id,
-                              formData || ""
-                          )
-                        : await adminApi.addSubject(params);
-                console.log(response);
-                toast.success(response?.message, {
-                    duration: 2000,
-                });
-            }
-            history.push("/admin/subjects");
+            const response =
+                type === 1
+                    ? await adminApi.updateSubject(params, id)
+                    : await adminApi.addSubject(params);
+            console.log(response);
+            toast.success(response?.message, {
+                duration: 2000,
+            });
+            history.push("/admin/class");
         } catch (error) {
             toast.error(error?.message, {
                 duration: 2000,
@@ -136,7 +99,6 @@ function SubjectDetail(props) {
             getSubjectByCode();
         }
         if (role === "ROLE_ADMIN") getListManager();
-        getListExpert();
     }, []);
 
     const optionStatus = [
@@ -156,31 +118,14 @@ function SubjectDetail(props) {
                             <CCardHeader>
                                 <strong>
                                     {type === 1
-                                        ? "Change Subject Info"
-                                        : "Create New Subject"}
+                                        ? "Change Class Info"
+                                        : "Create New Class"}
                                 </strong>
                             </CCardHeader>
                             <CCardBody>
                                 <div className="mb-3">
-                                    <CFormLabel>
-                                        Code (
-                                        <span style={{ color: "red" }}>*</span>)
-                                    </CFormLabel>
-                                    <CFormInput
-                                        type="text"
-                                        id="exampleFormControlInput1"
-                                        disabled={isNotAdmin}
-                                        defaultValue={
-                                            type === 1 ? subject?.code : ""
-                                        }
-                                        onChange={(e) =>
-                                            setCodeSubject(e.target.value)
-                                        }
-                                    />
-                                </div>
-                                <div className="mb-3">
                                     <CFormLabel htmlFor="exampleFormControlInput1">
-                                        Name (
+                                        Package (
                                         <span style={{ color: "red" }}>*</span>)
                                     </CFormLabel>
                                     <CFormInput
@@ -189,14 +134,49 @@ function SubjectDetail(props) {
                                         disabled={isNotAdmin}
                                         placeholder=""
                                         defaultValue={
-                                            type === 1 ? subject?.name : ""
+                                            type === 1 ? subject?.packages : ""
                                         }
                                         onChange={(e) =>
-                                            setName(e.target.value)
+                                            setPackages(e.target.value)
                                         }
                                     />
                                 </div>
-
+                                <div className="mb-3">
+                                    <CFormLabel htmlFor="exampleFormControlInput1">
+                                        Date From (
+                                        <span style={{ color: "red" }}>*</span>)
+                                    </CFormLabel>
+                                    <CFormInput
+                                        type="date"
+                                        id="exampleFormControlInput1"
+                                        disabled={isNotAdmin}
+                                        placeholder=""
+                                        defaultValue={
+                                            type === 1 ? subject?.dateFrom : ""
+                                        }
+                                        onChange={(e) =>
+                                            setDateFrom(e.target.value)
+                                        }
+                                    />
+                                </div>
+                                <div className="mb-3">
+                                    <CFormLabel htmlFor="exampleFormControlInput1">
+                                        Date To (
+                                        <span style={{ color: "red" }}>*</span>)
+                                    </CFormLabel>
+                                    <CFormInput
+                                        type="date"
+                                        id="exampleFormControlInput1"
+                                        disabled={isNotAdmin}
+                                        placeholder=""
+                                        defaultValue={
+                                            type === 1 ? subject?.dateTo : ""
+                                        }
+                                        onChange={(e) =>
+                                            setDateTo(e.target.value)
+                                        }
+                                    />
+                                </div>
                                 <div className="mb-3">
                                     <CFormLabel htmlFor="exampleFormControlInput1">
                                         Status (
@@ -241,41 +221,6 @@ function SubjectDetail(props) {
                                     </CFormSelect>
                                 </div>
                                 <div className="mb-3">
-                                    <CFormLabel htmlFor="exampleFormControlInput1">
-                                        Note (
-                                        <span style={{ color: "red" }}>*</span>)
-                                    </CFormLabel>
-                                    <CFormInput
-                                        type="text"
-                                        id="exampleFormControlInput1"
-                                        disabled={isNotAdmin}
-                                        placeholder=""
-                                        defaultValue={
-                                            type === 1 ? subject?.note : ""
-                                        }
-                                        onChange={(e) =>
-                                            setNote(e.target.value)
-                                        }
-                                    />
-                                </div>
-                                <div className="mb-3">
-                                    <CFormLabel htmlFor="exampleFormControlInput1">
-                                        Price
-                                    </CFormLabel>
-                                    <CFormInput
-                                        type="text"
-                                        id="exampleFormControlInput1"
-                                        disabled={isNotAdmin}
-                                        placeholder=""
-                                        defaultValue={
-                                            type === 1 ? subject?.price : ""
-                                        }
-                                        onChange={(e) =>
-                                            setPrice(e.target.value)
-                                        }
-                                    />
-                                </div>
-                                <div className="mb-3">
                                     <CFormLabel htmlFor="formFile">
                                         Manager
                                     </CFormLabel>
@@ -283,7 +228,7 @@ function SubjectDetail(props) {
                                         aria-label="Default select example"
                                         disabled={isNotAdmin}
                                         onChange={(e) =>
-                                            setManager(e.target.value)
+                                            setTrainer(e.target.value)
                                         }
                                     >
                                         <option>Select manager</option>
@@ -326,86 +271,7 @@ function SubjectDetail(props) {
                                         })}
                                     </CFormSelect>
                                 </div>
-                                <div className="mb-3">
-                                    <CFormLabel htmlFor="formFile">
-                                        Expert
-                                    </CFormLabel>
-                                    <CFormSelect
-                                        aria-label="Default select example"
-                                        onChange={(e) =>
-                                            setExpert(e.target.value)
-                                        }
-                                    >
-                                        <option>Select expert</option>
-                                        {listExpert?.map((item, index) => {
-                                            if (type === 1) {
-                                                return subject?.expert
-                                                    ?.username ===
-                                                    item?.username ? (
-                                                    <option
-                                                        key={index}
-                                                        defaultValue={
-                                                            item?.username
-                                                        }
-                                                        selected
-                                                    >
-                                                        {item?.username}
-                                                    </option>
-                                                ) : (
-                                                    <option
-                                                        key={index}
-                                                        defaultValue={
-                                                            item?.username
-                                                        }
-                                                    >
-                                                        {item?.username}
-                                                    </option>
-                                                );
-                                            } else {
-                                                return (
-                                                    <option
-                                                        key={index}
-                                                        defaultValue={
-                                                            item?.username
-                                                        }
-                                                    >
-                                                        {item?.username}
-                                                    </option>
-                                                );
-                                            }
-                                        })}
-                                    </CFormSelect>
-                                </div>
-                                <div className="mb-3">
-                                    <CFormLabel htmlFor="formFile">
-                                        Upload Image Subject
-                                    </CFormLabel>
-                                    {subject?.image ? (
-                                        <div className="mb-3">
-                                            <img
-                                                style={{
-                                                    width: "100px",
-                                                    height: "100px",
-                                                }}
-                                                src={subject?.image}
-                                                alt=""
-                                            />
-                                        </div>
-                                    ) : (
-                                        ""
-                                    )}
 
-                                    <input
-                                        className="form-control"
-                                        disabled={isNotAdmin}
-                                        type="file"
-                                        accept=".jpg, .png"
-                                        defaultValue={subject?.image}
-                                        onChange={(e) =>
-                                            setImage(e.target.files[0])
-                                        }
-                                    />
-                                </div>
                                 <div className="mb-3">
                                     <CButton
                                         onClick={() => handleUpdateSubject()}
@@ -423,4 +289,4 @@ function SubjectDetail(props) {
     );
 }
 
-export default SubjectDetail;
+export default ClassDetail;

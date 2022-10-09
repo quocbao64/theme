@@ -5,6 +5,7 @@ const Dashboard = React.lazy(() => import("./admin/views/dashboard/Dashboard"));
 const Users = React.lazy(() => import("./admin/views/users/Users"));
 const Subject = React.lazy(() => import("./admin/views/subjects/subjects"));
 const Contact = React.lazy(() => import("./admin/views/contact/contact"));
+const Class = React.lazy(() => import("./admin/views/class/class"));
 
 const routes = [
     { path: "/", exact: true, name: "Home" },
@@ -12,6 +13,7 @@ const routes = [
     { path: "/admin/users", name: "Users", element: Users },
     { path: "/admin/contact", name: "Contact", element: Contact },
     { path: "/admin/subjects", name: "Subject", element: Subject },
+    { path: "/admin/class", name: "Class", element: Class },
 ];
 
 export default routes;

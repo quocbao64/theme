@@ -26,7 +26,6 @@ function EditProfile({ stateChanger, state, user }) {
                 } else {
                     const formData = new FormData();
                     formData.append("avatar", avatar, avatar?.name);
-                    console.log(formData);
                     const responseUploadAvatar = await userApi.uploadAvatar(
                         formData
                     );
@@ -39,7 +38,7 @@ function EditProfile({ stateChanger, state, user }) {
                 fullname: fullname,
                 phoneNumber: phoneNumber,
             };
-            const response = await userApi.updateInfo(param);
+            const response = await userApi.updateInfo(param, user?.id);
             stateChanger(!state);
             setAlertMessage(response?.message);
             setAlertVisible(true);
