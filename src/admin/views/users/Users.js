@@ -54,7 +54,7 @@ const Users = () => {
             selector: (row) => (
                 <div className="my-2">
                     <CButton
-                        href={"/react/admin/users/" + row?.username}
+                        href={"/react/admin/users/" + row?.id}
                         style={{ width: "100px" }}
                         color="primary"
                     >
