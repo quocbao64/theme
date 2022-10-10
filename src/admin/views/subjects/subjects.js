@@ -101,30 +101,20 @@ function Subjects() {
                 <AppHeader />
                 <CInputGroup className="px-3 pb-3 d-flex justify-content-between">
                     <div className="d-flex">
-                        <CInputGroup
-                            className="mr-3"
-                            style={{ maxWidth: "300px" }}
-                        >
+                        <CInputGroup className="mr-3">
                             <CFormInput
                                 placeholder="Enter a name"
                                 aria-label="Recipient's username"
                                 aria-describedby="button-addon2"
+                                style={{ maxWidth: "300px" }}
                                 onChange={(e) => setNameSearch(e.target.value)}
                             />
-                            <CButton
-                                type="button"
-                                color="primary"
-                                id="button-addon2"
-                                onClick={() => getAllSubject()}
-                            >
-                                Search
-                            </CButton>
-                        </CInputGroup>
-                        <CInputGroup style={{ maxWidth: "300px" }}>
                             <CFormInput
                                 placeholder="Enter a subject code"
                                 aria-label="Recipient's username"
                                 aria-describedby="button-addon2"
+                                className="mx-3"
+                                style={{ maxWidth: "300px" }}
                                 onChange={(e) => setCodeSearch(e.target.value)}
                             />
                             <CButton
