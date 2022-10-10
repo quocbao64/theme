@@ -17,9 +17,9 @@ export const adminApi = {
         const url = "/api/role/update";
         return axiosApi.post(url, params);
     },
-    getUserByUsername: (params) => {
-        const url = "/api/admin/users/detail";
-        return axiosApi.post(url, params);
+    getUserById: (id) => {
+        const url = `/api/admin/users/${id}`;
+        return axiosApi.get(url);
     },
     updateUserProfile: (params, id) => {
         const url = `/api/admin/users/update-user?id=${id}`;

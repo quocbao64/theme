@@ -50,15 +50,12 @@ function UserDetail(props) {
     };
 
     const getUserById = async () => {
-        const username = location.pathname.substring(
+        const id = location.pathname.substring(
             "/admin/users/".length,
             location.pathname.length
         );
         try {
-            const params = {
-                username: username,
-            };
-            const response = await adminApi.getUserByUsername(params);
+            const response = await adminApi.getUserById(id);
             setUser(response);
         } catch (responseError) {
             toast.error(responseError?.message, {
