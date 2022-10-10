@@ -71,7 +71,7 @@ function UserDetail(props) {
                 role: option,
             };
             const paramsProfile = {
-                username: user?.username,
+                username: username,
                 fullname: fullname,
                 phoneNumber: phone,
                 password: password,
