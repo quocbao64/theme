@@ -21,8 +21,8 @@ export const adminApi = {
         const url = "/api/admin/users/detail";
         return axiosApi.post(url, params);
     },
-    updateUserProfile: (params) => {
-        const url = "/api/admin/users/update-user";
+    updateUserProfile: (params, id) => {
+        const url = `/api/admin/users/update-user?id=${id}`;
         return axiosApi.post(url, params);
     },
 

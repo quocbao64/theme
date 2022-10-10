@@ -77,6 +77,7 @@ function UserDetail(props) {
                 username: user?.username,
                 fullname: fullname,
                 phoneNumber: phone,
+                password: password,
             };
             if (option !== user.role && option !== undefined) {
                 const response = await adminApi.updateRoleUser(params);
@@ -85,7 +86,8 @@ function UserDetail(props) {
                 });
             }
             const responseProfile = await adminApi.updateUserProfile(
-                paramsProfile
+                paramsProfile,
+                user?.id
             );
             toast.success(responseProfile?.message, {
                 duration: 2000,
@@ -138,7 +140,21 @@ function UserDetail(props) {
                                         placeholder=""
                                         defaultValue={user?.username}
                                         onChange={(e) =>
-                                            setFullname(e.target.value)
+                                            setUsername(e.target.value)
+                                        }
+                                    />
+                                </div>
+                                <div className="mb-3">
+                                    <CFormLabel htmlFor="exampleFormControlInput1">
+                                        Password
+                                    </CFormLabel>
+                                    <CFormInput
+                                        disabled
+                                        type="text"
+                                        id="exampleFormControlInput1"
+                                        placeholder="name@example.com"
+                                        onChange={(e) =>
+                                            setPassword(e.target.value)
                                         }
                                     />
                                 </div>
