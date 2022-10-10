@@ -34,7 +34,6 @@ function EditProfile({ stateChanger, state, user }) {
 
             //update profile
             const param = {
-                username: username,
                 fullname: fullname,
                 phoneNumber: phoneNumber,
             };
@@ -92,7 +91,7 @@ function EditProfile({ stateChanger, state, user }) {
                                 className="form-control"
                                 type="text"
                                 defaultValue={user?.username}
-                                onChange={(e) => setUsername(e.target.value)}
+                                disabled
                             />
                         </div>
                     </div>
