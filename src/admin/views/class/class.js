@@ -1,5 +1,6 @@
 import { CButton, CFormInput, CInputGroup } from "@coreui/react";
 import Cookies from "js-cookie";
+import moment from "moment/moment";
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -21,23 +22,23 @@ function Class() {
             sortable: true,
         },
         {
-            name: "Name",
-            selector: (row) => row.name,
+            name: "Date From",
+            selector: (row) => new Date(row.dateFrom).toLocaleDateString(),
             sortable: true,
         },
         {
-            name: "Price",
-            selector: (row) => row.price,
+            name: "Date To",
+            selector: (row) => new Date(row.dateTo).toLocaleDateString(),
             sortable: true,
         },
         {
-            name: "Manager",
-            selector: (row) => row.manager?.username,
+            name: "Trainer",
+            selector: (row) => row.trainer?.username,
             sortable: true,
         },
         {
-            name: "Expert",
-            selector: (row) => row.expert?.username,
+            name: "Package",
+            selector: (row) => row.packages,
             sortable: true,
         },
         {
@@ -55,13 +56,14 @@ function Class() {
         },
     ];
     const [listClass, setListClass] = useState([]);
+    const [packages, setPackages] = useState("");
     const role = JSON.parse(Cookies.get("user"))?.role;
     const isNotAdminOrManager =
         role !== "ROLE_ADMIN" && role !== "ROLE_MANAGER" ? true : false;
 
     const getAllClass = async () => {
         try {
-            const response = await adminApi.getAllClass();
+            const response = await adminApi.getAllClass(packages);
             setListClass(response);
         } catch (responseError) {
             console.log(responseError);

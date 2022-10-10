@@ -17,8 +17,7 @@ import { adminApi } from "../../../api/adminApi";
 import { AppFooter, AppHeader, AppSidebar } from "../../components";
 
 function ClassDetail(props) {
-    const [listSubject, setListSubject] = useState();
-    const [listManager, setListManager] = useState();
+    const [listTrainer, setListTrainer] = useState();
     const [subject, setSubject] = useState();
     const [packages, setPackages] = useState();
     const [dateFrom, setDateFrom] = useState();
@@ -35,20 +34,12 @@ function ClassDetail(props) {
     );
     const type = id !== "create" ? 1 : 0;
 
-    const getAllSubject = async () => {
+    const getClassById = async () => {
         try {
-            const response = await adminApi.getAllSubject();
-            setListSubject(response);
-        } catch (responseError) {
-            console.log(responseError);
-        }
-    };
-
-    const getSubjectByCode = async () => {
-        try {
-            const response = await adminApi.getSubjectDetail(id);
+            const response = await adminApi.getClassDetail(id);
             setSubject(response);
-            console.log(response);
+            setDateFrom(response?.dateFrom);
+            setDateTo(response?.dateTo);
         } catch (responseError) {
             toast.error(responseError?.message, {
                 duration: 2000,
@@ -56,14 +47,12 @@ function ClassDetail(props) {
         }
     };
 
-    const getListManager = async () => {
+    const getListTrainer = async () => {
         try {
-            const response = await adminApi.getListManager();
-            setListManager(response);
-        } catch (responseError) {
-            toast.error(responseError?.message, {
-                duration: 2000,
-            });
+            const response = await adminApi.getListTrainer();
+            setListTrainer(response);
+        } catch (err) {
+            console.log(err);
         }
     };
 
@@ -79,8 +68,8 @@ function ClassDetail(props) {
 
             const response =
                 type === 1
-                    ? await adminApi.updateSubject(params, id)
-                    : await adminApi.addSubject(params);
+                    ? await adminApi.updateClass(params, id)
+                    : await adminApi.createClass(params);
             console.log(response);
             toast.success(response?.message, {
                 duration: 2000,
@@ -95,11 +84,12 @@ function ClassDetail(props) {
 
     useEffect(() => {
         if (type === 1) {
-            getAllSubject();
-            getSubjectByCode();
+            getClassById();
         }
-        if (role === "ROLE_ADMIN") getListManager();
+        if (role === "ROLE_ADMIN" || role === "ROLE_MANAGER") getListTrainer();
     }, []);
+
+    useEffect(() => {}, [dateFrom, dateTo]);
 
     const optionStatus = [
         { status: false, label: "Inactive" },
@@ -151,11 +141,17 @@ function ClassDetail(props) {
                                         id="exampleFormControlInput1"
                                         disabled={isNotAdmin}
                                         placeholder=""
-                                        defaultValue={
-                                            type === 1 ? subject?.dateFrom : ""
+                                        value={
+                                            type === 1
+                                                ? new Date(
+                                                      dateFrom
+                                                  ).toLocaleDateString("en-CA")
+                                                : ""
                                         }
                                         onChange={(e) =>
-                                            setDateFrom(e.target.value)
+                                            setDateFrom(
+                                                new Date(e.target.value)
+                                            )
                                         }
                                     />
                                 </div>
@@ -169,11 +165,15 @@ function ClassDetail(props) {
                                         id="exampleFormControlInput1"
                                         disabled={isNotAdmin}
                                         placeholder=""
-                                        defaultValue={
-                                            type === 1 ? subject?.dateTo : ""
+                                        value={
+                                            type === 1
+                                                ? new Date(
+                                                      dateTo
+                                                  ).toLocaleDateString("en-CA")
+                                                : ""
                                         }
                                         onChange={(e) =>
-                                            setDateTo(e.target.value)
+                                            setDateTo(new Date(e.target.value))
                                         }
                                     />
                                 </div>
@@ -231,10 +231,10 @@ function ClassDetail(props) {
                                             setTrainer(e.target.value)
                                         }
                                     >
-                                        <option>Select manager</option>
-                                        {listManager?.map((item, index) => {
+                                        <option>Select trainer</option>
+                                        {listTrainer?.map((item, index) => {
                                             if (type === 1) {
-                                                return subject?.manager
+                                                return subject?.trainer
                                                     ?.username ===
                                                     item?.username ? (
                                                     <option

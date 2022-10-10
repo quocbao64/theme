@@ -34,6 +34,10 @@ export const adminApi = {
         const url = "/api/admin/users/expert-list";
         return axiosApi.get(url);
     },
+    getListTrainer: () => {
+        const url = `/api/admin/users/trainer-list`;
+        return axiosApi.get(url);
+    },
 
     // Web Contact
     getAllContact: () => {
@@ -76,8 +80,8 @@ export const adminApi = {
     },
 
     // class
-    getAllClass: () => {
-        const url = "/api/class";
+    getAllClass: (packages) => {
+        const url = `/api/class?package=${packages}`;
         return axiosApi.get(url);
     },
     getClassDetail: (id) => {
