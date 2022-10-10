@@ -106,16 +106,9 @@ function SubjectDetail(props) {
                     price: price,
                 };
 
-                const formData = new FormData();
-                formData.append("image", image);
-
                 const response =
                     type === 1
-                        ? await adminApi.updateSubject(
-                              params,
-                              id,
-                              formData || ""
-                          )
+                        ? await adminApi.updateSubject(params, id)
                         : await adminApi.addSubject(params);
                 console.log(response);
                 toast.success(response?.message, {

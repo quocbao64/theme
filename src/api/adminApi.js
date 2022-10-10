@@ -66,8 +66,8 @@ export const adminApi = {
         const url = `/api/subjects/create`;
         return axiosApi.post(url, params);
     },
-    updateSubject: (params, id, image) => {
-        const url = `/api/subjects/update?id=${id}&image=${image}`;
+    updateSubject: (params, id) => {
+        const url = `/api/subjects/update?id=${id}`;
         return axiosApi.put(url, params);
     },
     managerUpdateSubject: (params) => {
